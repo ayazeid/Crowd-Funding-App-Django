@@ -1,8 +1,6 @@
-
 ## Project Title:
 
 #### Crowd-Funding Web app
-
 
 ## Project Description:
 
@@ -11,9 +9,6 @@
 ## Language:
 
 #### Python Programming language
-
-
-
 
 ## Developers:
 
@@ -29,9 +24,6 @@
 
 #### 6- Adham Essam Khatean [@AdhamEssam](https://github.com/aekhatean)
 
-
-
-
 ## Instructions:
 
 #### To run the project we highly recommend the following
@@ -40,9 +32,8 @@
 
 git clone https://github.com/ayazeid/Crowd-Funding-App-Django.git
 
-#### 2- pip install the packages in requirements.txt 
+#### 2- pip install the packages in requirements.txt
 
 #### 3- Run in the terminal at the crowd directory
+
 python3 manage.py rumserver
-
-
