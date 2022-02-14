@@ -5,6 +5,8 @@ from .forms import *
 
 
 # Create your views here.
+def signup(request):
+    pass
 # - He can view his profile
 def user_profile(request, username):
     context = {'user': Profile.objects.get(username=username)}
