@@ -1,5 +1,8 @@
-from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+
+from . import forms
 from .models import Project
 
 """
@@ -13,9 +16,19 @@ class ProjectList(ListView):
     model = Project
 
 
+class ProjectDetail(DetailView):
+    pass
+
+
 class ProjectCreate(CreateView):
     model = Project
-    fields = '__all__'
+    form_class = forms.ProjectCreateForm
+
+    # Django built-in function for redirecting to another url on success
+    def get_success_url(self):
+        # Use the following line once you create DetailView to redirect to the newly created project
+        # return reverse('projects', kwargs={'pk': self.object.pk})
+        return reverse('projects')
 
 
 class ProjectDelete(DeleteView):
