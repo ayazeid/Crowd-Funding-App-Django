@@ -21,8 +21,28 @@
             <p>Country: <span>{{user.country}}</span></p>
             </div>
             {% buttons %}
-            <a class="btn btn-outline-dark btn-sm">Edit Profile</a>
-            <a class="btn btn-outline-danger btn-sm">Delete Profile</a>
+            <a class="btn btn-outline-dark btn-sm" href="{%url 'edit_profile_page' user.username %}">Edit Profile</a>
+            <a class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Delete Profile</a>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete your profile permanently?
+      </div>
+      <div class="modal-footer">
+        <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+        <a type="button" class="btn btn-primary" href="{%url 'delete_user_profile' user.username %}">Confirm</a>
+      </div>
+    </div>
+  </div>
+</div>
+
         {% endbuttons %}
         </div>
 

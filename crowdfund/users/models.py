@@ -11,7 +11,7 @@ class Profile(models.Model):
     # auth_user
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    username = models.CharField(max_length=100)
+    username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(max_length=100)
     phone = models.IntegerField()
     profile_picture = models.ImageField(upload_to=image_upload)
