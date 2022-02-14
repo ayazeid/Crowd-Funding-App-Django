@@ -27,8 +27,8 @@ class ProjectCreate(CreateView):
     # Django built-in function for redirecting to another url on success
     def get_success_url(self):
         # Use the following line once you create DetailView to redirect to the newly created project
-        # return reverse('projects', kwargs={'pk': self.object.pk})
-        return reverse('projects')
+        # return reverse('projects', kwargs={'title': self.object.title})
+        return reverse('projects') #localhost:8000/projects/run-for-amputees
 
 
 class ProjectDelete(DeleteView):

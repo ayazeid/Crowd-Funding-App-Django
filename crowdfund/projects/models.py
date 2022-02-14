@@ -1,6 +1,10 @@
 from django.conf import settings
 from django.db import models
+""""
+    click report -> Project(UpdateView) -> template: form (ok==sumbit) -> reverse('projects')
 
+    click donate -> project(UpdateView):current_fund, UserDonations(UpdateView):{user_id-project_id-donation_amount} -> template: form (ok==sumbit) -> reverse('projects')
+"""
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
@@ -16,8 +20,8 @@ class Project(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=120)
     details = models.TextField()
-    total_target = models.FloatField()
-    current_fund = models.FloatField(default=0)
+    total_target = models.IntegerField()
+    current_fund = models.IntegerField(default=0)
     start_date = models.DateField()
     end_date = models.DateField()
     reports_count = models.IntegerField(default=0)
@@ -48,3 +52,6 @@ class ProjectReport(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user_reported = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     report_date = models.DateField()
+
+# comments
+# ReportComment
