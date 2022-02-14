@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {%block title%}Projects{%endblock title%} {% block content %}
+<div class="container mt-5">
+<h2>Projects</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Project Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for project in object_list%}
+        <tr>
+          <th scope="row">{{project.id}}</th>
+          <td>{{project.title}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+</div>
+{% endblock content %}
