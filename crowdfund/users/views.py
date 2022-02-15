@@ -14,9 +14,9 @@ def user_profile(request, username):
 # - He can view his projects
 # - He can view his donations
 
-# - He can edit all his data except for the email
+# - He can edit all his data except for the email, done
 # - He can have extra optional info other than the info he added
-# while registration (Birthdate, facebook profile, country)
+# while registration (Birthdate, facebook profile, country), done
 def update_profile(request, username):
     if request.method == 'POST':
         UserProfileForm(request.POST, instance=Profile.objects.get(username=username)).save()
@@ -28,7 +28,7 @@ def update_profile(request, username):
 
 
 # - User can delete his account (Note that there must be a
-# confirmation message before deleting)
+# confirmation message before deleting), done
 def delete_profile(request,username):
     Profile.objects.filter(username=username).delete()
     # return redirect('')

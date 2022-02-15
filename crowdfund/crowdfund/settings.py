@@ -11,14 +11,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-# import environ
+import environ
 import os
 from datetime import timedelta
 
 
 # Initialise environment variables
-# env = environ.Env()
-# environ.Env.read_env()
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'apis.apps.ApisConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    "bootstrap5",
+
 ]
 
 MIDDLEWARE = [
@@ -86,27 +88,17 @@ WSGI_APPLICATION = 'crowdfund.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('DATABASE_NAME'),
-#         'USER': env('DATABASE_USER'),
-#         'PASSWORD': env('DATABASE_PASS'),
-#         'HOST': 'localhost',
-#         'PORT': 5432
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'crowddb',
-        'USER': 'yoda',
-        'PASSWORD': 'yoda',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASS'),
         'HOST': 'localhost',
         'PORT': 5432
     }
 }
+
 
 
 # Password validation
@@ -166,3 +158,5 @@ REST_FRAMEWORK = {
     ),
 
 }
+
+
