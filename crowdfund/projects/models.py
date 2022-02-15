@@ -28,8 +28,8 @@ class Project(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     reports_count = models.IntegerField(default=0)
-    # total_rate = models.IntegerField(default=0)
-    average_rate = models.FloatField(default=0)
+    rating_users_count = models.IntegerField(default=0)
+    total_rate = models.IntegerField(default=0)
     # Needs Authentication app to be done first
     # project_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)  # Should populate category table with
@@ -51,6 +51,7 @@ class Rating(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     rating = models.FloatField()  # Rating out of 5
 
+# 5 users , 3 -> 4* 2->2* , rating_users_count | total_rating
 
 class ProjectReport(models.Model):
     class Meta:
