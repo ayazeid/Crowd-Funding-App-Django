@@ -1,0 +1,121 @@
+{% extends 'base.html' %} {%block title%}User Profile{%endblock title%}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<!--<h1>userprofile</h1>-->
+<div class="container my-5">
+
+<!--    { # user info #}-->
+    <div class="row">
+    <div class="col-3">
+            <img src={{user.profile_picture.url}}  alt="profile_picture" class=img-fluid" style="width:200px">
+    </div>
+    <div class="col-md-6">
+        <div class="d-flex justify-content-between">
+            <div>
+                <p>Full Name:  <span> {{user.first_name}} {{user.last_name}}</span></p>
+            <p>Username: <span> {{user.username}}</span></p>
+            <p>Email: <span> {{user.email}}</span></p>
+            <p>Facebook: <span>{{user.facebook_profile}}</span></p>
+            <p>Country: <span>{{user.country}}</span></p>
+            </div>
+            {% buttons %}
+            <a class="btn btn-outline-dark btn-sm" href="{%url 'edit_profile_page' user.username %}">Edit Profile</a>
+            <a class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Delete Profile</a>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete your profile permanently?
+      </div>
+      <div class="modal-footer">
+        <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+        <a type="button" class="btn btn-primary" href="{%url 'delete_user_profile' user.username %}">Confirm</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+        {% endbuttons %}
+        </div>
+
+    </div>
+</div>
+    <div class="container my-5">
+        <!--    user projects -->
+    <div class="container my-5">
+           <h3 class="display-6">Projects</h3>
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+<!--    user donations-->
+    <div class="container my-5">
+        <h3 class="display-6">Donations</h3>
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    </div>
+
+</div>
+{% endblock content %}
