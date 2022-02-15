@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/',include('apis.urls',namespace='crowd_funding_apis')),
+    path('project_api/',include('apis.urls',namespace='crowd_funding_apis')),
+    path('user_api/',include('user_apis.urls',namespace='user_apis')),
     path('projects/', include('projects.urls'))
 ]
