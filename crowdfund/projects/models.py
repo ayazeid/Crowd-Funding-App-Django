@@ -68,5 +68,21 @@ class ProjectReport(models.Model):
         return self.user_reported.username + ' - ' + self.project.title + " report"
 
 
-# comments
-# ReportComment
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user_commented = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.CharField(max_length=500)
+    created_time = models.DateTimeField(auto_now_add=True)
+    reports_count = models.IntegerField(default=0)
+ 
+
+class ReportComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_reported = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class UserDonation(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_donated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
