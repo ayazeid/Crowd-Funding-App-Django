@@ -1,0 +1,14 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+
+<form method="post" class="w-50 mx-auto pt-5 pb-5" action="">
+    {% csrf_token %}
+    <h2 class='mx-auto'>Sign in</h2>
+    {% bootstrap_form form %}
+    <input type="submit" value="Signin" class="boxed-btn3 w-100"/>
+    <div class="text-danger">{{msg}}</div>
+    <div class="text-danger"><a href="{% url 'signup' %}">go to create new acount?</a></div>
+  </form>
+{% endblock %}
