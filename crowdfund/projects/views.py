@@ -1,4 +1,4 @@
-from gettext import translation
+from django.db import transaction
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -38,7 +38,7 @@ class ProjectCreate(CreateWithInlinesView):
 
     def get_context_data(self, **kwargs):
         data = super(ProjectCreate, self).get_context_data(**kwargs)
-        data['project_pictures'] = ProjectPictureFormSet()
+        # data['project_pictures'] = ProjectPictureFormSet()
         if self.request.POST:
             data['project_pictures'] = ProjectPictureFormSet(self.request.POST, self.request.FILES)
         else:
@@ -48,7 +48,7 @@ class ProjectCreate(CreateWithInlinesView):
     def form_valid(self, form):
         context = self.get_context_data()
         form_img = context['project_pictures']
-        with translation.atomic():
+        with transaction.atomic():
             form.instance.user = self.request.user
             self.object = form.save()
             if form_img.is_valid():

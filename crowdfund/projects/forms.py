@@ -4,9 +4,15 @@ from .models import Project, ProjectPicture
 
 
 class  ProjectPictureForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProjectPictureForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control cf-dy-hidden'
+            visible.label = ''
+
     class Meta:
         model = ProjectPicture
-        exclude = ()
+        fields = ['picture',]
 
 class ProjectCreateForm(forms.ModelForm):
     """
@@ -20,8 +26,8 @@ class ProjectCreateForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ['title', 'details', 'total_target', 'current_fund', 'start_date', 'end_date', 'category']
+        fields = ['title', 'total_target', 'current_fund', 'start_date', 'end_date', 'category', 'details']
 
 ProjectPictureFormSet = inlineformset_factory(
-    Project, ProjectPicture, form=ProjectPictureForm, fields=['picture'], extra=3, can_delete=True  # <- place where you can enter the nr of img
+    Project, ProjectPicture, form=ProjectPictureForm, fields=['picture'], extra=5, can_delete=False
 )

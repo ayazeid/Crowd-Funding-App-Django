@@ -3,10 +3,12 @@
         <div class="row mt-5">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
+                    <h1 class="mb-5 cf-text-green">Create Project</h1>
                     {% csrf_token %}
-                    {{project_pictures.as_p}}
                     {{ form.as_p }}
+                    <p>Project pictures:</p>
+                    {{ project_pictures.as_p }}
                     <input type="submit" value="Create project" class="btn btn-success">
                     <a href="{% url 'projects' %}" class="btn btn-danger">Cancel</a>
                 </form>
@@ -14,5 +16,4 @@
             <div class="col-md-3"></div>
         </div>
     </div>
-
 {% endblock content %}
