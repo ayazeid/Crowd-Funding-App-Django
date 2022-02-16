@@ -111,6 +111,8 @@ DATABASES = {
 }
 
 
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -159,6 +161,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+
+
+EMAIL_USE_TLS = True  
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_HOST_USER = 'ahmedmahmou2111998@gmail.com'  
+EMAIL_HOST_PASSWORD = 'vimiisvrsnqaywwf'  
+EMAIL_PORT = 587  
+
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
                'rest_framework.authentication.TokenAuthentication',
@@ -168,5 +180,6 @@ REST_FRAMEWORK = {
     ),
 
 }
+
 
 
