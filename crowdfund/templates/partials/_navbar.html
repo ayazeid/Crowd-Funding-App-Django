@@ -1,11 +1,17 @@
 {% load static %}
-<header
-  class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow"
->
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <nav class="navbar navbar-expand navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Crowdfund</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarsExample02"
+        aria-controls="navbarsExample02"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -16,6 +22,14 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'projects' %}">Projects</a>
+          </li>
+          <li class="nav-item">
+            <!-- Todo:adding the authed user username later-->
+            <a
+              class="nav-link"
+              href="{% url 'user_profile_page' 'mastergrogu' %}"
+              ><i class="bi bi-person text-light fs-4"></i
+            ></a>
           </li>
         </ul>
       </div>

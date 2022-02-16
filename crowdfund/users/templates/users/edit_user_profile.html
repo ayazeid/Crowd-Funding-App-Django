@@ -1,41 +1,69 @@
 {% extends 'base.html' %} {%block title%}Edit User Profile{%endblock title%}
-{% load bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% block content %}
-<div class="container my-5">
-<div class="row">
+{%load bootstrap5 %} {% block content %}
+<div
+  class="container my-5 shadow-sm py-3 my-3 rounded-3 justify-content-center"
+>
+  <div class="row">
     {% buttons %}
-            <a class="btn btn-outline-dark btn-sm" href="{%url 'user_profile_page' user %}">Cancel</a>
-             <a class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Delete Profile</a>
+    <a
+      class="btn btn-outline-dark btn-sm"
+      href="{%url 'user_profile_page' user %}"
+      >Cancel</a
+    >
+    <a
+      class="btn btn-outline-danger btn-sm"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop"
+      >Delete Profile</a
+    >
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete your profile permanently?
-      </div>
-      <div class="modal-footer">
-        <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
-        <a type="button" class="btn btn-primary" href="{%url 'delete_user_profile' user %}">Confirm</a>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete your profile permanently?
+          </div>
+          <div class="modal-footer">
+            <a type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              >Cancel</a
+            >
+            <a
+              type="button"
+              class="btn btn-primary"
+              href="{%url 'delete_user_profile' user %}"
+              >Confirm</a
+            >
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-        {% endbuttons %}
-</div>
-<form  method="post" class="form" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% buttons %}
-        <button type="submit" class="btn btn-outline-dark">Submit</button>
     {% endbuttons %}
-</form>
+  </div>
+  <div class="shadow-lg p-5 my-3 rounded-3 bg-light justify-content-center">
+    <form method="post" class="form" enctype="multipart/form-data">
+      {% csrf_token %} {% bootstrap_form form %} {% buttons %}
+      <button type="submit" class="btn btn-outline-dark">Submit</button>
+      {% endbuttons %}
+    </form>
+  </div>
 </div>
 {% endblock content %}
