@@ -51,6 +51,9 @@ class Rating(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     rating = models.FloatField()  # Rating out of 5
 
+    def __str__(self):
+        return self.user_rated.username + ' - ' + self.project_id.title + " rating"
+
 # 5 users , 3 -> 4* 2->2* , rating_users_count | total_rating
 
 class ProjectReport(models.Model):

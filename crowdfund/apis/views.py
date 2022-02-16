@@ -85,23 +85,23 @@ class ReportProject(APIView):
 
 
 # Must be authenticated
-# class RateProject(APIView):
-#     permission_classes = [IsAuthenticated]
+class RateProject(APIView):
+    permission_classes = [IsAuthenticated]
 
-#     def post(self, request, id):
-#             try:
-#                 project = Project.objects.get(id=id)
-#                 token = request.META.get('HTTP_AUTHORIZATION','')
-#                 token_key = token[6:]
-#                 user = Token.objects.get(key=token_key).user
-#                 if Rating.objects.filter(user_rated=user,project_id=project):
-#                     return Response({'msg':"You can't rate the same project twice!"},status.HTTP_400_BAD_REQUEST)
-#                 user_rating = request.POST.get('rating')
-#                 Rating.objects.create(project_id=project,user_rated=user,rating=user_rating)
-#                 rating_users_count = Rating.objects.filter(project_id=project).count()
-#                 project.average_rate = project.total_rate / rating_users_count
-#                 project.total_rate += user_rating
-#                 project.save()
-#                 return Response({'msg':"Rating sent successfully"},status.HTTP_201_CREATED)
-#             except:
-#                 return Response({'msg':"Can't find project with given id"},status.HTTP_404_NOT_FOUND)
+    def post(self, request, id):
+            try:
+                project = Project.objects.get(id=id)
+                token = request.META.get('HTTP_AUTHORIZATION','')
+                token_key = token[6:]
+                user = Token.objects.get(key=token_key).user
+                if Rating.objects.filter(user_rated=user,project_id=project):
+                    return Response({'msg':"You can't rate the same project twice!"},status.HTTP_400_BAD_REQUEST)
+                user_rating = request.POST.get('rating')
+                Rating.objects.create(project_id=project,user_rated=user,rating=user_rating)
+                project.rating_users_count += 1
+                project.total_rate += int(user_rating)
+                project.save()
+                return Response({'msg':"Rating sent successfully"},status.HTTP_201_CREATED)
+            except Exception as e:
+                print(e)
+                return Response({'msg':"Can't find project with given id"},status.HTTP_404_NOT_FOUND)
