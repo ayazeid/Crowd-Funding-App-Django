@@ -25,10 +25,14 @@
           </li>
           <li class="nav-item">
             <!-- Todo:adding the authed user username later-->
-            <a
-              class="nav-link"
-              href="{% url 'user_profile_page' 'mastergrogu' %}"
+            <a class="nav-link" href="{% url 'user_profile_page' %}"
               ><i class="bi bi-person text-light fs-4"></i
+            ></a>
+          </li>
+          <li class="nav-item">
+            <!-- Todo:adding the authed user username later-->
+            <a class="nav-link" href="{% url 'logout' %}"
+              ><i class="bi bi-box-arrow-right text-light fs-4"></i
             ></a>
           </li>
         </ul>

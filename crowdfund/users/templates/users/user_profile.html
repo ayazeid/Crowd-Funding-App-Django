@@ -6,28 +6,34 @@
   <!--    { # user info #}-->
   <div class="row shadow-sm py-3 my-3 rounded-3 justify-content-center">
     <div class="col">
+      {%if user.profile_picture %}
       <img
         src="{{user.profile_picture.url}}"
         alt="profile_picture"
         class="img-fluid"
         style="width: 200px"
       />
+
+      {%endif%}
     </div>
     <div class="col-10">
       <div class="d-flex justify-content-between">
         <!-- User Info -->
+
         <table class="table table-sm table-borderless fw-lighter fs-5 px-4">
           <tr>
             <td>Full Name</td>
-            <td class="fw-normal">{{user.first_name}} {{user.last_name}}</td>
+            <td class="fw-normal">
+              {{user.user.first_name}} {{user.user.last_name}}
+            </td>
           </tr>
           <tr>
             <td>Username</td>
-            <td class="fw-normal">{{user.username}}</td>
+            <td class="fw-normal">{{user.user.username}}</td>
           </tr>
           <tr>
             <td>Email</td>
-            <td class="fw-normal">{{user.email}}</td>
+            <td class="fw-normal">{{user.user.email}}</td>
           </tr>
           <tr>
             <td>Facebook</td>
@@ -38,12 +44,13 @@
             <td class="fw-normal m-4">{{user.country}}</td>
           </tr>
         </table>
+
         <!-- Edit and delete buttons -->
         {% buttons %}
 
         <a
           class="btn btn-outline-dark btn-sm"
-          href="{%url 'edit_profile_page' user.username %}"
+          href="{%url 'edit_profile_page' %}"
           >Edit Profile</a
         >
         <a
@@ -89,7 +96,7 @@
                 <a
                   type="button"
                   class="btn btn-primary"
-                  href="{%url 'delete_user_profile' user.username %}"
+                  href="{%url 'delete_user_profile' %}"
                   >Confirm</a
                 >
               </div>

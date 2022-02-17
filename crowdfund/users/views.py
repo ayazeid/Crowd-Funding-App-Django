@@ -1,8 +1,8 @@
+from curses.ascii import US
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .tokens.token import TokenGenerator
-from .models import *
 from .forms import *
 
 from django.shortcuts import render, redirect  
@@ -15,12 +15,15 @@ from django.template.loader import render_to_string
 from django.contrib.auth.models import User  
 from django.core.mail import EmailMessage  
 
+# signals imports
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import Profile
+
 # Create your views here.
-def signup(request):
-    pass
 # - He can view his profile
-def user_profile(request, username):
-    context = {'user': Profile.objects.get(username=username)}
+def user_profile(request):
+    context = {'user': Profile.objects.get(user=request.user)}
     return render(request, 'users/user_profile.html', context)
 
 
@@ -30,34 +33,39 @@ def user_profile(request, username):
 # - He can edit all his data except for the email, done
 # - He can have extra optional info other than the info he added
 # while registration (Birthdate, facebook profile, country), done
-def update_profile(request, username):
+def update_profile(request):
     if request.method == 'POST':
-        UserProfileForm(request.POST, instance=Profile.objects.get(username=username)).save()
-        return redirect('user_profile_page', username)
+        userform=EditUserForm(request.POST,instance=request.user)
+        forminstance=UserProfileForm(request.POST, request.FILES,instance=Profile.objects.get(user=request.user))
+        if userform.is_valid() and forminstance.is_valid():
+            userform.save()
+            updatedprofile=forminstance.save(commit=False)
+            updatedprofile.user = request.user
+            updatedprofile.save()
+            return redirect('user_profile_page')
     else:
-        forminstance = UserProfileForm(instance=Profile.objects.get(username=username))
-        context = {'form': forminstance, 'user': username}
-        return render(request, 'users/edit_user_profile.html', context)
+        userform = EditUserForm(instance=request.user)
+        forminstance = UserProfileForm(instance=Profile.objects.get(user=request.user))
+    context = {'form': forminstance,'userform':userform}
+    return render(request, 'users/edit_user_profile.html', context)
 
 
 # - User can delete his account (Note that there must be a
 # confirmation message before deleting), done
-def delete_profile(request,username):
-    Profile.objects.filter(username=username).delete()
-    # return redirect('')
+def delete_profile(request):
+    User.objects.get(username=request.user.username).delete()
     return HttpResponse('User deleted successfully')
 
   
 def signup(request):  
     if request.method == 'POST':  
-        form = SignupForm(request.POST)  
+        form = SignupForm(request.POST)
         if form.is_valid():  
             # save form in the memory not in database  
             user = form.save(commit=False)  
             user.is_active = False  
-            
-            user.save()  
-           
+            user.save() 
+            Profile.objects.create(user=user)
             # to get the domain of the current site  
             current_site = get_current_site(request)  
             mail_subject = 'Activation link has been sent to your email id'  
@@ -75,6 +83,7 @@ def signup(request):
             return HttpResponse('Please confirm your email address to complete the registration')  
     else:  
         form = SignupForm()  
+       
     return render(request, 'signup.html', {'form': form})  
 
 
@@ -105,9 +114,8 @@ def signin_user(request):
         u = User.objects.get(email=request.POST['email'])
         user = authenticate(username=u.username,password=request.POST['password'])
         if user is not None and user.is_active:
-          login(request,user)
-        #   print (request.user.email)
-          return render(request,'home.html')      
+          login(request,user)     
+          return redirect(user_profile)
         else:
             return HttpResponse('you should active your acount first... chick your Email')
      except:
