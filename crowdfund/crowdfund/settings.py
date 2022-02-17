@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import environ
 import os
-from datetime import timedelta
 
 
 # Initialise environment variables
@@ -48,9 +47,11 @@ INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
     'apis.apps.ApisConfig',
+    'user_apis.apps.UserApisConfig',
     'rest_framework',
     'rest_framework.authtoken',
     "bootstrap5",
+    'home',
 
 ]
 
@@ -149,7 +150,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 
 
