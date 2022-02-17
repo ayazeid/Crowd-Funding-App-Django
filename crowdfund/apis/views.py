@@ -5,6 +5,7 @@ from .serializers import *
 from projects.models import *
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 from datetime import date
 
 class ListProjects(generics.ListAPIView):
@@ -16,16 +17,81 @@ class ViewProject(generics.RetrieveAPIView):
     serializer_class = ProjectSerializer
     
 # Must be authenticated
-class CreateProject(generics.CreateAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+class CreateProject(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        project_serializer = ProjectSerializer(data=request.data)
+        if project_serializer.is_valid():
+            project = project_serializer.save()
+            for image in request.FILES.getlist('images'):
+                project_image_serializer = ProjectImageSerializer(data={'project_id':project.id,'picture':image})
+                if project_image_serializer.is_valid():
+                    project_image_serializer.save()
+                else:
+                    project.delete()
+                    return Response({
+                        "msg":"There is a problem with project images.",
+                        "errors": project_image_serializer.errors
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                        "msg":"Project created successfully",
+                        "data":project_serializer.data
+                    }, status=status.HTTP_201_CREATED)
+        else:
+            return Response({
+                        "msg":"There is a problem with project data.",
+                        "errors": project_serializer.errors
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
 # Must be authenticated
 class UpdateProject(generics.UpdateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated]
+
+class UpdateProjectImages(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, id):
+        try:
+            project = Project.objects.get(id=id)
+            #current images
+            project_images = ProjectPicture.objects.filter(project_id=id)
+            #images in request
+            images = request.FILES.getlist('images')
+            
+            #no new images
+            if len(images) == 0:
+                return Response({
+                    "msg":"No images provided, Your project images will still the same",
+                    "data":ProjectSerializer(project).data
+                }, status=status.HTTP_200_OK)
+            
+            #there is new images, so delete old images and add new ones
+            for image in images:
+                new_image_serializer = ProjectImageSerializer(data={'project_id':project.id,'picture':image})
+                if not new_image_serializer.is_valid():
+                    return Response({
+                        'msg':'There is a problem in your images'
+                    },status=status.HTTP_400_BAD_REQUEST)
+
+            [image.delete() for image in project_images]
+
+            for image in images:
+                new_image_serializer = ProjectImageSerializer(data={'project_id':project.id,'picture':image})
+                if new_image_serializer.is_valid():
+                    new_image_serializer.save()
+            return Response({
+            "msg":"Project images updated successfully",
+            "data":ProjectSerializer(project).data
+                }, status=status.HTTP_200_OK)
+        except Project.DoesNotExist:
+            return Response({
+                'msg':"Can't find project with the given id"
+                },status.HTTP_404_NOT_FOUND)
 
 # Must be authenticated
 class DeleteProject(APIView):
@@ -102,6 +168,5 @@ class RateProject(APIView):
                 project.total_rate += int(user_rating)
                 project.save()
                 return Response({'msg':"Rating sent successfully"},status.HTTP_201_CREATED)
-            except Exception as e:
-                print(e)
+            except:
                 return Response({'msg':"Can't find project with given id"},status.HTTP_404_NOT_FOUND)

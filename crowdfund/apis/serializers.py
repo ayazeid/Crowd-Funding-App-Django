@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from projects.models import *
 
+# class ProjectListSerializer(serializers.ModelSerializer):
+
 class ProjectSerializer(serializers.ModelSerializer):
     average_rate = serializers.SerializerMethodField('calc_average_rate')
+    # images = serializers.SerializerMethodField('get_project_images') 
 
     def calc_average_rate(self, project):
         try:
@@ -10,12 +13,23 @@ class ProjectSerializer(serializers.ModelSerializer):
             return average_rate
         except ZeroDivisionError:
             return 0 
+    
+    # def get_project_images(self, project):
+    #     images = ProjectPicture.objects.filter(project_id=project).picture
+    #     print(images)
+    #     return images
 
     class Meta:
         model = Project
         fields = ['id','title','details','total_target','current_fund','start_date','end_date',
-        'reports_count','rating_users_count','total_rate','category','average_rate']
+        'reports_count','rating_users_count','total_rate','category','average_rate','images']
+        depth = 1
         
+
+class ProjectImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = ProjectPicture
 
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:

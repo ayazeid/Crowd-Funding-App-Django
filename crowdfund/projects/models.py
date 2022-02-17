@@ -39,10 +39,13 @@ class Project(models.Model):
         return self.title
 
 
+def image_upload(instance, filename):
+    return f'project_images/{instance.project_id.id}/{filename}'
+
 class ProjectPicture(models.Model):
     id = models.AutoField(primary_key=True)
-    picture = models.ImageField()
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to= image_upload)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='images')
 
 
 class Rating(models.Model):
