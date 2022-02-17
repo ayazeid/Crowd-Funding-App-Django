@@ -21,7 +21,6 @@ from django.dispatch import receiver
 from .models import Profile
 
 # Create your views here.
-
 # - He can view his profile
 def user_profile(request):
     context = {'user': Profile.objects.get(user=request.user)}
