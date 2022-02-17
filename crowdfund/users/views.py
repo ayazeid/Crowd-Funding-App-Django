@@ -1,4 +1,5 @@
-from curses.ascii import US
+
+from datetime import datetime, timezone
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -11,7 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str  
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode  
 from django.template.loader import render_to_string  
- 
+
 from django.contrib.auth.models import User  
 from django.core.mail import EmailMessage  
 
@@ -87,18 +88,28 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})  
 
 
-def activate(request, uidb64, token):  
+def activate(request, uidb64, token):
     try:  
         uid = force_str(urlsafe_base64_decode(uidb64))  
         user = User.objects.get(pk=uid)  
+    
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):  
         user = None  
-    if user is not None and TokenGenerator().check_token(user, token):  
-        user.is_active = True  
-        user.save()
-        return render(request,'confirmation.html')  
+    if user is not None and TokenGenerator().check_token(user, token) and user.is_active == False: 
+            print(user.date_joined)
+            email_sent_at = user.date_joined
+            now = datetime.now(timezone.utc)
+            date_diffrince = (
+               now-email_sent_at   
+            ).seconds / 60
+            print(date_diffrince)
+            if date_diffrince < (24 * 60):
+                user.is_active = True  
+                user.save()
+                return render(request,'confirmation.html')  
     else:  
         return HttpResponse('Activation link is invalid!')  
+  
     
     
     
