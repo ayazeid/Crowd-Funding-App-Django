@@ -3,6 +3,7 @@
 .DS_Store
 .idea
 media/
+migrations/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

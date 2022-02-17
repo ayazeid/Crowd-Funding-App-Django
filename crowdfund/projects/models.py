@@ -34,6 +34,7 @@ class Project(models.Model):
     # project_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)  # Should populate category table with
     # at least one record to create a project (do not worry will not cause errors)
+    featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
