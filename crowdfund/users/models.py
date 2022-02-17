@@ -25,7 +25,7 @@ def image_upload(instance, imagename):
 
 # Create your models here.
 class Profile(models.Model):
-    # todo: connect with auth_user
+    # connect with auth_user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=11,null=True,validators=[validate_egyptian_number],error_messages ={
                     "required":"this is not a valid egyptian number"
