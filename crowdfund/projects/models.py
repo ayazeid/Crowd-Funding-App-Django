@@ -31,8 +31,8 @@ class Project(models.Model):
     rating_users_count = models.IntegerField(default=0)
     total_rate = models.IntegerField(default=0)
     # Needs Authentication app to be done first
-    # project_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)  # Should populate category table with
+    #project_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)  # Should populate category table with
     # at least one record to create a project (do not worry will not cause errors)
 
     def __str__(self):
