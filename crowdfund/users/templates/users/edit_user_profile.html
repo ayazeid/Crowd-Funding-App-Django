@@ -5,9 +5,7 @@
 >
   <div class="row">
     {% buttons %}
-    <a
-      class="btn btn-outline-dark btn-sm"
-      href="{%url 'user_profile_page' user %}"
+    <a class="btn btn-outline-dark btn-sm" href="{%url 'user_profile_page' %}"
       >Cancel</a
     >
     <a
@@ -48,7 +46,7 @@
             <a
               type="button"
               class="btn btn-primary"
-              href="{%url 'delete_user_profile' user %}"
+              href="{%url 'delete_user_profile' %}"
               >Confirm</a
             >
           </div>
@@ -60,7 +58,16 @@
   </div>
   <div class="shadow-lg p-5 my-3 rounded-3 bg-light justify-content-center">
     <form method="post" class="form" enctype="multipart/form-data">
-      {% csrf_token %} {% bootstrap_form form %} {% buttons %}
+      {% csrf_token %} {% bootstrap_form userform %} {% bootstrap_form form %}
+      {% for field in form %}  
+      <p>    
+        
+          <p style="color: red">{{ field.errors }}</p>  
+      
+      </p>  
+      {% endfor %}   
+      
+      {% buttons %}
       <button type="submit" class="btn btn-outline-dark">Submit</button>
       {% endbuttons %}
     </form>

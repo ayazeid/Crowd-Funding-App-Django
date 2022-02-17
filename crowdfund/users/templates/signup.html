@@ -61,6 +61,7 @@
       </p>  
       {% endfor %}   {% endcomment %}
       {% bootstrap_form form %}
+        
 
        {% for field in form %}  
       <p>    
@@ -69,7 +70,7 @@
         {% endfor %}  
       </p>  
       {% endfor %}   
-
+      
     <input type="submit"class="boxed-btn3 w-100" value='Sign up'> 
     <div class="text-danger"><a href="{% url 'signin' %}">do you have acount?</a></div>
   </form>  
