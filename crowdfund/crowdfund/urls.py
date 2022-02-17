@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('home.urls')),
     path('users/', include('users.urls')),
     path('project_api/',include('apis.urls',namespace='crowd_funding_apis')),
     path('user_api/',include('user_apis.urls',namespace='user_apis')),
