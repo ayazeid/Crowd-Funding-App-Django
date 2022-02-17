@@ -1,20 +1,19 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="latest">
+<div>
   <h2 style="margin: 1.5em">Latest Projects</h2>
   <div class="container">
     <div class="row g-3">
       {% for project in latest_projects %}
       <div class="col-12 col-md-6 col-lg-4">
         <div class="card">
-          {% for pic in project.projectpicture_set.all %}
           <img
             class="card-img-top"
-            src="http://127.0.0.1:8000/media/{{pic.picture}}"
+            src="http://127.0.0.1:8000/media/{{project.images.all.0.picture}}"
             alt="Card image cap"
             style="height: 320px"
           />
-          {% endfor %}
+
           <div class="card-body">
             <h5 class="card-title">{{project.title}}</h5>
             <p class="card-text">{{project.details}}</p>
@@ -27,21 +26,19 @@
   </div>
 </div>
 
-<div class="latest">
+<div>
   <h2 style="margin: 1.5em">Latest Featured Projects</h2>
   <div class="container">
     <div class="row g-3">
       {% for project in admin_projects %}
       <div class="col-12 col-md-6 col-lg-4">
         <div class="card">
-          {% for pic in project.projectpicture_set.all %}
           <img
             class="card-img-top"
-            src="http://127.0.0.1:8000/media/{{pic.picture}}"
+            src="http://127.0.0.1:8000/media/{{project.images.all.0.picture}}"
             alt="Card image cap"
             style="height: 320px"
           />
-          {% endfor %}
           <div class="card-body">
             <h5 class="card-title">{{project.title}}</h5>
             <p class="card-text">{{project.details}}</p>
@@ -53,4 +50,4 @@
     </div>
   </div>
 </div>
-{% endblock content %}
+{% endblock %}
