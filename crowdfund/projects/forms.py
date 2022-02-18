@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import inlineformset_factory
-from .models import Project, ProjectPicture, Comment, Tag
+from .models import Project, ProjectPicture, Comment, Tag, UserDonation
 
 
 class  ProjectPictureForm(forms.ModelForm):
@@ -57,3 +57,15 @@ class  ProjectCommentForm(forms.ModelForm):
         #     """Save the request with the form so it can be accessed in clean_*()"""
         #     self.request = kwargs.pop('request', None)
         #     super(ProjectCommentForm, self).__init__(*args, **kwargs)
+
+
+# class ProjectDonationForm(forms.ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super(ProjectDonationForm, self).__init__(*args, **kwargs)
+#         for visible in self.visible_fields():
+#             visible.field.widget.attrs['class'] = 'form-control'
+
+#     class Meta:
+#         model = UserDonation
+#         fields = ['amount',]
+

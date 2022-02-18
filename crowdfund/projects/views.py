@@ -6,7 +6,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.http import Http404, HttpResponse
 
 from .forms import ProjectCreateForm, ProjectPictureFormSet, ProjectTagFormSet
-from .models import Project, ProjectPicture, Comment, Tag
+from .models import Project, ProjectPicture, Comment, Tag, UserDonation
 
 """
 --Project views--
@@ -98,6 +98,25 @@ class CommentCreate(CreateView):
         # print(self.kwargs["pk"])
         context['pro_id'] = self.kwargs["pk"]
         context['user_commented_id'] = self.request.user.id
+        return context
+
+    def get_success_url(self):
+        return reverse('details-project', kwargs={'pk': self.object.project.id})
+
+
+"""
+--Donations views--
+"""
+
+class DonateCreate(LoginRequiredMixin, CreateView):
+    model = UserDonation
+    login_url = reverse_lazy('signin')
+    fields = ['amount', 'project', 'user_donated']
+
+    def get_context_data(self, **kwargs):
+        context = super(DonateCreate, self).get_context_data(**kwargs)
+        context['project_id'] = self.kwargs["pk"]
+        context['user_donated_id'] = self.request.user.id
         return context
 
     def get_success_url(self):
