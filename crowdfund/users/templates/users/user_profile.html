@@ -138,35 +138,47 @@
       <div class="card card-body">
         <div class="container my-5">
           <h3 class="display-6">Projects</h3>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr class="align-middle text-center">
+                  <th scope="col">ID</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Total Target</th>
+                  <th scope="col">Current Fund</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">End Date</th>
+                  <th scope="col">Rate</th>
+                  <th scope="col">Reports</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for project in projects %}
+                <tr class="align-middle text-center">
+                  <th scope="row">{{project.id}}</th>
+                  <td>{{project.title}}</td>
+                  <td>{{project.category}}</td>
+                  <td>{{project.total_target}}</td>
+                  <td>{{project.current_fund}}</td>
+                  <td>{{project.start_date}}</td>
+                  <td>{{project.end_date}}</td>
+                  <td>{{project.total_rate}}</td>
+                  <td>{{project.reports_count}}</td>
+                  <td>
+                    <a
+                      class="btn btn-outline-dark btn-sm"
+                      href="{% url 'details-project' project.id %}"
+                      >View</a
+                    >
+                    <a class="btn btn-outline-danger btn-sm">Delete</a>
+                  </td>
+                </tr>
+                {%endfor%}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
