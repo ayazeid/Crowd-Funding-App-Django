@@ -16,7 +16,8 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ['id','title','details','total_target','current_fund','start_date','end_date',
-        'reports_count','rating_users_count','total_rate','category','average_rate','images']
+        'reports_count','rating_users_count','total_rate','category','average_rate',
+        'featured','images']
         depth = 1
         
 
