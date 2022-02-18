@@ -31,10 +31,13 @@ class Profile(models.Model):
                     "required":"this is not a valid egyptian number"
                     })
     profile_picture = models.ImageField(upload_to=image_upload,null=True)
-    birth_date = models.DateField(null=True)
-    facebook_profile = models.URLField(null=True)
-    country = models.CharField(max_length=50,null=True)
+    birth_date = models.DateField(null=True,blank=True)
+    facebook_profile = models.URLField(null=True,blank=True)
+    country = models.CharField(max_length=50,null=True,blank=True)
     # todo: projects
+
+    def __str__(self):
+        return str(self.user)
 
     
 

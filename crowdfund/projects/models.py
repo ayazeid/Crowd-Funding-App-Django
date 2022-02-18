@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from datetime import date
+from django.contrib.auth.models import User
+
 """"
     click report -> Project(UpdateView) -> template: form (ok==sumbit) -> reverse('projects')
 
@@ -35,7 +37,7 @@ class Project(models.Model):
     rating_users_count = models.IntegerField(default=0)
     total_rate = models.IntegerField(default=0)
     # Needs Authentication app to be done first
-    #project_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    project_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)  # Should populate category table with
     # at least one record to create a project (do not worry will not cause errors)
     featured = models.BooleanField(default=False)
