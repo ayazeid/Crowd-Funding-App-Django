@@ -20,11 +20,16 @@ from django.core.mail import EmailMessage
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Profile
-from projects.models import Project
+from projects.models import Project,UserDonation
+from django.db.models import Sum
 # Create your views here.
 # - He can view his profile
 def user_profile(request):
-    context = {'user': Profile.objects.get(user=request.user),'projects':Project.objects.filter(project_owner=request.user)}
+    loged_user = Profile.objects.get(user=request.user)
+    user_projects = Project.objects.filter(project_owner=request.user)
+    user_donations= UserDonation.objects.filter(user_donated=request.user)
+    total_donations_amount = sum([donation.amount for donation in UserDonation.objects.filter(user_donated=request.user) ])
+    context = {'user': loged_user,'projects':user_projects,'donations':user_donations,'total_donations':total_donations_amount}
     return render(request, 'users/user_profile.html', context)
 
 
