@@ -1,5 +1,29 @@
 {% extends 'base.html' %} {% block content %}
+<!-- Highest Rated Projects -->
+<h2 style="margin: 1.5em">Highest Rated Projects</h2>
+<div class="w3-content w3-display-container" style="height: 50vh">
+  {% for project in top_rated_projects %}
+  <div class="w3-display-container mySlides">
+    <img
+      src="http://127.0.0.1:8000/media/{{project.images.all.0.picture}}"
+      style="width: 100%; height: 50vh"
+    />
+    <div
+      class="w3-display-bottomleft w3-large w3-container w3-padding-16 w3-black"
+    >
+      {{project.title}}
+    </div>
+  </div>
+  {% endfor %}
 
+  <button class="w3-button w3-display-left w3-black" onclick="plusDivs(-1)">
+    &#10094;
+  </button>
+  <button class="w3-button w3-display-right w3-black" onclick="plusDivs(1)">
+    &#10095;
+  </button>
+</div>
+<!-- Latest  Projects -->
 <div>
   <h2 style="margin: 1.5em">Latest Projects</h2>
   <div class="container">
@@ -25,7 +49,7 @@
     </div>
   </div>
 </div>
-
+<!-- Latest Featured Projects -->
 <div>
   <h2 style="margin: 1.5em">Latest Featured Projects</h2>
   <div class="container">
@@ -42,7 +66,7 @@
           <div class="card-body">
             <h5 class="card-title">{{project.title}}</h5>
             <p class="card-text">{{project.details}}</p>
-            <a href="#" class="btn btn-primary">View Project</a>
+            <a href="#" class="btn btn-success">View Project</a>
           </div>
         </div>
       </div>
