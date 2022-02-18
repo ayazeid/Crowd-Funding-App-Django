@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import inlineformset_factory
-from .models import Project, ProjectPicture, Comment
+from .models import Project, ProjectPicture, Comment, Tag
 
 
 class  ProjectPictureForm(forms.ModelForm):
@@ -13,6 +13,19 @@ class  ProjectPictureForm(forms.ModelForm):
     class Meta:
         model = ProjectPicture
         fields = ['picture',]
+
+
+class ProjectTagForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProjectTagForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+            visible.label = ''
+
+    class Meta:
+        model = Tag
+        fields = ['tag_name',]
+
 
 class ProjectCreateForm(forms.ModelForm):
     """
@@ -30,6 +43,10 @@ class ProjectCreateForm(forms.ModelForm):
 
 ProjectPictureFormSet = inlineformset_factory(
     Project, ProjectPicture, form=ProjectPictureForm, fields=['picture'], extra=5, can_delete=False
+)
+
+ProjectTagFormSet = inlineformset_factory(
+    Project, Tag, form=ProjectTagForm, fields=['tag_name'], extra=5, can_delete=False
 )
 
 class  ProjectCommentForm(forms.ModelForm):
