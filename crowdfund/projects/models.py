@@ -1,6 +1,11 @@
 from django.conf import settings
 from django.db import models
 from datetime import date
+""""
+    click report -> Project(UpdateView) -> template: form (ok==sumbit) -> reverse('projects')
+
+    click donate -> project(UpdateView):current_fund, UserDonations(UpdateView):{user_id-project_id-donation_amount} -> template: form (ok==sumbit) -> reverse('projects')
+"""
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
@@ -18,13 +23,12 @@ class Tag(models.Model):
         return self.tag_name
 
 
-
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=120)
     details = models.TextField()
-    total_target = models.FloatField()
-    current_fund = models.FloatField(default=0)
+    total_target = models.IntegerField()
+    current_fund = models.IntegerField(default=0)
     start_date = models.DateField()
     end_date = models.DateField()
     reports_count = models.IntegerField(default=0)
@@ -70,3 +74,23 @@ class ProjectReport(models.Model):
 
     def __str__(self):
         return self.user_reported.username + ' - ' + self.project.title + " report"
+
+
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user_commented = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.CharField(max_length=500)
+    created_time = models.DateTimeField(auto_now_add=True)
+    reports_count = models.IntegerField(default=0)
+ 
+
+class ReportComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_reported = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class UserDonation(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_donated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
