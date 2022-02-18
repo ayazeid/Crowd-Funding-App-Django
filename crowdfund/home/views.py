@@ -25,3 +25,10 @@ def projectCategories(request):
         category = request.POST.get('categories')
         category_projects = Project.objects.filter(category_id=category)
         return render(request,'home/categoryProjects.html' , {"category_projects":category_projects })
+
+
+def SearchTitle(request):
+    title=request.POST.get('title')
+    search_by_title =Project.objects.filter(title__contains=title)
+    return render(request,'home/searchTitle.html' ,{"search_by_title":search_by_title})
+    

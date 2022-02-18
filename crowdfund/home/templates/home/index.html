@@ -1,5 +1,19 @@
 {% extends 'base.html' %} {% block content %}
 
+<!-- Search By Title -->
+<div class="container Search">
+  <form action="{% url 'search_by_title' %}" method="POST">
+    {% csrf_token %}
+    <input
+      type="text"
+      name="title"
+      class="form-control-sm rounded"
+      placeholder="Enter Project Title"
+    />
+    <input type="submit" value="Search" />
+  </form>
+</div>
+
 <!-- Highest Rated Projects -->
 <h2 style="margin: 1.5em">Highest Rated Projects</h2>
 <div class="w3-content w3-display-container" style="height: 50vh">
@@ -97,4 +111,5 @@
     </select>
   </form>
 </div>
+
 {% endblock %}
