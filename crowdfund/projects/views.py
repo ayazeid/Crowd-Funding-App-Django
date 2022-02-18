@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from extra_views import CreateWithInlinesView, InlineFormSetFactory
+from django.db import transaction
+from django.contrib.auth.mixins import LoginRequiredMixin
+import json
 
-
-
-from .forms import ProjectCreateForm, ProjectPictureForm, ProjectPictureFormSet
-from .models import Project, ProjectPicture, Comment
+from .forms import ProjectCreateForm, ProjectPictureFormSet, ProjectTagFormSet
+from .models import Project, ProjectPicture, Comment, Tag
 
 """
 --Project views--
@@ -29,9 +30,16 @@ class ProjectPictureMetaInline(InlineFormSetFactory):
     fields = '__all__'
 
 
-class ProjectCreate(CreateWithInlinesView):
+class ProjectTagMetaInline(InlineFormSetFactory):
+    model = Tag
+    fields = '__all__'
+
+
+
+class ProjectCreate(LoginRequiredMixin, CreateWithInlinesView):
     model = Project
-    inlines = [ProjectPictureMetaInline,]
+    inlines = [ProjectPictureMetaInline,ProjectTagMetaInline]
+    login_url = reverse_lazy('signin')
     template_name = 'projects/project_form.html'
     form_class = ProjectCreateForm
 
@@ -39,14 +47,19 @@ class ProjectCreate(CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         data = super(ProjectCreate, self).get_context_data(**kwargs)
         if self.request.POST:
+            print(self.request.POST)
             data['project_pictures'] = ProjectPictureFormSet(self.request.POST, self.request.FILES)
+            data['project_tags'] = ProjectTagFormSet(self.request.POST)
         else:
             data['project_pictures'] = ProjectPictureFormSet()
+            data['project_tags'] = ProjectTagFormSet()
         return data
 
     def form_valid(self, form):
         form.instance.project_owner = self.request.user
         form.save()
+        # with transaction.atomic():
+
         return super(ProjectCreate, self).form_valid(form)
 
     # Django built-in function for redirecting to another url on success
