@@ -26,7 +26,7 @@ class ProjectCreateForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ['title', 'total_target', 'current_fund', 'start_date', 'end_date', 'category', 'details']
+        fields = ['title', 'total_target', 'start_date', 'end_date', 'category', 'details']
 
 ProjectPictureFormSet = inlineformset_factory(
     Project, ProjectPicture, form=ProjectPictureForm, fields=['picture'], extra=5, can_delete=False

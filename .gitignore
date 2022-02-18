@@ -2,7 +2,10 @@
 # Crowdfund stuff
 crowdfund/projects/migrations/
 crowdfund/projects/migrations/*
-crowdfund/media
+crowdfund/users/migrations/
+crowdfund/users/migrations/*
+crowdfund/media/
+crowdfund/media/*
 
 # misc
 .DS_Store

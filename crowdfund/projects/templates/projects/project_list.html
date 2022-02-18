@@ -9,8 +9,8 @@
       </p>
       <p>
         <a href="#projects-section" class="btn btn-success my-2">Donate</a>
-        <a href="{% url 'create-project' %}" class="btn btn-secondary my-2"
-          >Create a campaign</a
+        <a href="{% url 'create-project' %}" class="btn btn-primary my-2"
+          >Create a project</a
         >
       </p>
     </div>
@@ -57,14 +57,13 @@
 
           <div class="mt-4">
             <small>Funds (EGP)</small>
-            <div class="progress">
+            <div class="progress" onload="getpercentage(this)">
               {# Needs a lot of fixing #}
               {% comment %} {% with percentage=(widthratio project.current_fund total_target 1) %}  {% endcomment %}
               <div
-                class="progress-bar bg-success"
+                class="progress-bar bg-success fund-progress"
                 role="progressbar"
                 style="width: {{percentage}}%;"
-                {% comment %} aria-valuenow="{%  widthratio project.current_fund total_target 1  %}" {% endcomment %}
                 aria-valuemin="0"
                 aria-valuemax="100"
               >
