@@ -1,6 +1,11 @@
 :root {
   --cf-green: 90, 211, 155;
 }
+
+body {
+  overflow-x: hidden;
+}
+
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
