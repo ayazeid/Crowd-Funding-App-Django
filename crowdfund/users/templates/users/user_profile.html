@@ -287,12 +287,18 @@
               </tr>
             </thead>
             <tbody>
+              {%for report in reported_projects%}
               <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <th scope="row">{{report.project.id}}</th>
+                <td>{{report.project.title}}</td>
+                <td>{{report.project.project_owner}}</td>
+                <td>{{report.project.reports_count}}</td>
+                <td><a
+                  class="btn btn-outline-dark btn-sm"
+                  href="{% url 'details-project' report.project.id %}"
+                  >View</a</td>
               </tr>
+              {%endfor%}
             </tbody>
           </table>
         </div>
