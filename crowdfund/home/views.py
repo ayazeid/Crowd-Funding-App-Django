@@ -1,6 +1,6 @@
 from multiprocessing import context
 from django.shortcuts import render
-from projects.models import Project,Category
+from projects.models import Project,Category,Tag
 from django.db.models import Count
 # Create your views here.
 
@@ -31,4 +31,9 @@ def SearchTitle(request):
     title=request.POST.get('title')
     search_by_title =Project.objects.filter(title__contains=title)
     return render(request,'home/searchTitle.html' ,{"search_by_title":search_by_title})
+
+def SearchTag(request):
+    tag_name = request.POST.get('tag')
+    search_by_tag=Tag.objects.filter(tag__contains=tag_name)
+    return render(request,'home/searchTag.html' ,{"search_by_tag":search_by_tag })
     
