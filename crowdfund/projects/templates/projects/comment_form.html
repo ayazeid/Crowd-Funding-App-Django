@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block title %}Create Comment{% endblock title %}{% block content %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- {{ form.as_p }} -->
+                    <input type="hidden" name="project" id="id_project" value="{{pro_id}}" />
+                    <input type="hidden" name="user_commented" id="id_user_commented" value="{{user_commented_id}}" />
+                    <input name="content" id="content" />
+                    <input type="submit" value="Comment" class="btn btn-success">
+                    <a href="{% url 'projects' %}" class="btn btn-danger">Cancel</a>
+                </form>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+{% endblock content %}
