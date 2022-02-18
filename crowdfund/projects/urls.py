@@ -8,4 +8,5 @@ urlpatterns = [
     path('create-comment/<int:pk>', views.CommentCreate.as_view(), name='create-comment'),
     path('donate-project/<int:pk>', views.DonateCreate.as_view(), name='donate-project'),
     path('delete-project/<int:pk>', views.projectDelete, name='delete-project'),
+    path('report-project/<int:pk>', views.projectReport, name='report-project'),
 ]

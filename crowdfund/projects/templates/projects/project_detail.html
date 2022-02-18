@@ -26,8 +26,11 @@
       </div>
       Details: {{project.details}}<br />
       Category: {{project.category}}<br />
-      Tags: {% for tag in project.tag_set.all %} {{tag.tag_name}} &nbsp;- <br />
-      {% endfor %} Funding: {{project.current_fund}} /
+      Tags: 
+      {% for tag in project.tag_set.all %} 
+      {{tag.tag_name}} &nbsp;-
+      {% endfor %} <br>
+      Funding: {{project.current_fund}} /
       {{project.total_target}}<br />
       Start date: {{project.start_date}}<br />
       End date: {{project.end_date}}<br />
@@ -46,28 +49,77 @@
       <a href="{% url 'create-comment' project.id %}" class="btn btn-success"
         >Comment</a
       >
+      
+
+      <a
+      class="btn btn-danger"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdropsecond"
+      >Report Project</a
+      >
+
+              <!-- Modal -->
+              <div
+              class="modal fade"
+              id="staticBackdropsecond"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabelsecond"
+              aria-hidden="true"
+              >
+              <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabelsecond">Modal title</h5>
+                  <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                  ></button>
+                  </div>
+                  <div class="modal-body">
+                  Are you sure you want to report this project?
+                  </div>
+                  <div class="modal-footer">
+                  <a type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                      >Cancel</a
+                  >
+                  <a
+                      type="button"
+                      class="btn btn-primary"
+                      href="{%url 'report-project' project.id %}"
+                      >Confirm</a
+                  >
+                  </div>
+              </div>
+              </div>
+          </div>
+
+
       {% if project.project_owner == current_user %}
       <a
         class="btn btn-danger"
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+        data-bs-target="#staticBackdropthird"
         >Delete Project</a
       >
 
       <!-- Modal -->
       <div
         class="modal fade"
-        id="staticBackdrop"
+        id="staticBackdropthird"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabindex="-1"
-        aria-labelledby="staticBackdropLabel"
+        aria-labelledby="staticBackdropLabelthird"
         aria-hidden="true"
       >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="staticBackdropLabel">
+              <h5 class="modal-title" id="staticBackdropLabelthird">
                 Delete Confirmation
               </h5>
               <button
