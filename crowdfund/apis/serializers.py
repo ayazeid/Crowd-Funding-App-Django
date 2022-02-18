@@ -5,7 +5,6 @@ from projects.models import *
 
 class ProjectSerializer(serializers.ModelSerializer):
     average_rate = serializers.SerializerMethodField('calc_average_rate')
-    # images = serializers.SerializerMethodField('get_project_images') 
 
     def calc_average_rate(self, project):
         try:
@@ -14,11 +13,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         except ZeroDivisionError:
             return 0 
     
-    # def get_project_images(self, project):
-    #     images = ProjectPicture.objects.filter(project_id=project).picture
-    #     print(images)
-    #     return images
-
     class Meta:
         model = Project
         fields = ['id','title','details','total_target','current_fund','start_date','end_date',
