@@ -1,5 +1,4 @@
 var picPrompts = $(".cf-dy-hidden");
-var fundProgress = $(".fund-progress");
 
 // Dynamic picture prompt fields
 function dynamicPicPromptsDisplay() {
@@ -20,10 +19,3 @@ picPrompts.on("change", () => {
 
 // Show only the first prompt on load
 dynamicPicPromptsDisplay();
-
-// function getpercentage(progressBar) {
-//   console.log(progressBar);
-//   // percentage = currentFund / totalTarget
-//   // fundProgress.style.width = `${percentage}%`
-// //   aria-valuenow = percentage
-// }
