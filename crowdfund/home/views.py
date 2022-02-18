@@ -1,6 +1,6 @@
 from multiprocessing import context
 from django.shortcuts import render
-from projects.models import Project,ProjectPicture,Rating,Category
+from projects.models import Project,Category
 from django.db.models import Count
 # Create your views here.
 
@@ -19,3 +19,9 @@ def top_rated(request):
         top_rated_projects.append(project)
 
     return render(request,'home/index.html' ,{"latest_projects":latest_projects,"top_rated_projects":top_rated_projects,"categories":categories,"admin_projects":admin_projects })
+
+def projectCategories(request):
+    if request.method == 'POST':
+        category = request.POST.get('categories')
+        category_projects = Project.objects.filter(category_id=category)
+        return render(request,'home/categoryProjects.html' , {"category_projects":category_projects })
