@@ -40,6 +40,9 @@
       {{comment.content}}
       <hr />
       {% endfor %} {{ form.as_p }}
+      <a href="{% url 'donate-project' project.id %}" class="btn btn-success"
+        >Donate</a
+      >
       <a href="{% url 'create-comment' project.id %}" class="btn btn-success"
         >Comment</a
       >
