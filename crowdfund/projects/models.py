@@ -15,13 +15,6 @@ class Category(models.Model):
         return self.category_name
 
 
-class Tag(models.Model):
-    id = models.AutoField(primary_key=True)
-    tag_name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.tag_name
-
 
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
@@ -86,3 +79,11 @@ class UserDonation(models.Model):
     id = models.AutoField(primary_key=True)
     user_donated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+class Tag(models.Model):
+    id = models.AutoField(primary_key=True)
+    tag_name = models.CharField(max_length=30)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return self.tag_name
