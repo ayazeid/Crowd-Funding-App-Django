@@ -6,7 +6,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.http import Http404, HttpResponse
 
 from .forms import ProjectCreateForm, ProjectPictureFormSet, ProjectTagFormSet
-from .models import Project, ProjectPicture, Comment, Tag, UserDonation, ProjectReport
+from .models import Project, ProjectPicture, Comment, Tag, UserDonation, ProjectReport, ReportComment
 from datetime import datetime
 """
 --Project views--
@@ -97,6 +97,20 @@ def projectReport(request, pk):
 """
 --Comments views--
 """
+
+def commentReport(request, cpk):
+    comment = Comment.objects.get(id=cpk)
+    print(comment.id)
+    print(comment.content)
+    # return redirect("projects")
+    try:
+        new_report = ReportComment(comment=comment, user_reported=request.user, report_date=datetime.today().strftime('%Y-%m-%d'))
+        new_report.save()
+        comment.reports_count = comment.reports_count + 1
+        comment.save()
+        return redirect("projects")
+    except:
+        return redirect("projects")
 
 
 class CommentCreate(CreateView):

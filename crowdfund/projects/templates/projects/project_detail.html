@@ -40,7 +40,58 @@
       <hr />
       {% for comment in project.comment_set.all %}
       {{comment.user_commented}}:<br />
-      {{comment.content}}
+      {{comment.content}} <br/>
+
+      <!-- report comment -->
+      <a
+      class="btn btn-danger"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdropf{{comment.id}}"
+      >Report</a
+      >
+
+              <!-- Modal -->
+              <div
+              class="modal fade"
+              id="staticBackdropf{{comment.id}}"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabelf{{comment.id}}"
+              aria-hidden="true"
+              >
+              <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabelf{{comment.id}}">Modal title</h5>
+                  <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                  ></button>
+                  </div>
+                  <div class="modal-body">
+                  Are you sure you want to report this comment?
+                  </div>
+                  <div class="modal-footer">
+                  <a type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                      >Cancel</a
+                  >
+                  <a
+                      type="button"
+                      class="btn btn-primary"
+                      href="{%url 'report-comment' comment.id %}"
+                      >Confirm</a
+                  >
+                  </div>
+              </div>
+              </div>
+          </div>
+
+
+
+
       <hr />
       {% endfor %} {{ form.as_p }}
       <a href="{% url 'donate-project' project.id %}" class="btn btn-success"
