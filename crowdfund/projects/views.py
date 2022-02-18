@@ -67,23 +67,14 @@ class ProjectDelete(DeleteView):
 
 class CommentCreate(CreateView):
     model = Comment
-    # template_name = 'projects/project_detail.html'
     fields = ['content', 'project', 'user_commented']
-    # def get_absolute_url(self):
-    #     return reverse('details-project', args=[str(self.pk)])
-
-    # def form_valid(self, form):
-    #     project = get_object_or_404(Project, project=self.kwargs['id'])
-    #     form.instance.user_commented = self.request.user
-    #     form.instance.project = project
-    #     form.save()
-    #     return super().form_valid(form)
     
     def get_context_data(self, **kwargs):
         context = super(CommentCreate, self).get_context_data(**kwargs)
         print(self.kwargs["pk"])
         context['pro_id'] = self.kwargs["pk"]
+        context['user_commented_id'] = self.request.user.id
         return context
 
     def get_success_url(self):
-        return reverse('projects')
+        return reverse('details-project', kwargs={'pk': self.object.project.id})
