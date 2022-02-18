@@ -8,4 +8,5 @@ sqlparse==0.4.2
 django-environ==0.8.1
 Pillow==9.0.1
 django-rest-authtoken==2.1.4
+django-extra-views==0.14.0
 django-bootstrap-v5==1.0.11

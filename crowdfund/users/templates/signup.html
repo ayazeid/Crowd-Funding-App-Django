@@ -44,22 +44,10 @@
 {% bootstrap_javascript %}
 {% block content %}
 <div class = "container">  
- 
-  <form method="post" class="w-50 mx-auto pt-5 pb-5">
+  <form method="post" class="w-50 mx-auto pt-5 pb-5"enctype="multipart/form-data">
     <h2 class='mx-auto'>Sign up</h2>
     {% csrf_token %}
-      {% comment %} {% for field in form %}  
-      <p>  
-        {{ field.label_tag }}<br>  
-        {{ field }}  
-        {% if field.help_text %}  
-          <small style="display: none ">{{ field.help_text }}</small>  
-        {% endif %}  
-        {% for error in field.errors %}  
-          <p style="color: red">{{ error }}</p>  
-        {% endfor %}  
-      </p>  
-      {% endfor %}   {% endcomment %}
+
       {% bootstrap_form form %}
         
 
@@ -69,8 +57,17 @@
           <p style="color: red">{{ error }}</p>  
         {% endfor %}  
       </p>  
-      {% endfor %}   
-      
+      {% endfor %}  
+      {% bootstrap_form profile %}
+        
+
+      {% for field in profile %}  
+     <p>    
+       {% for error in field.errors %}  
+         <p style="color: red">{{ error }}</p>  
+       {% endfor %}  
+     </p>  
+     {% endfor %}  
     <input type="submit"class="boxed-btn3 w-100" value='Sign up'> 
     <div class="text-danger"><a href="{% url 'signin' %}">do you have acount?</a></div>
   </form>  

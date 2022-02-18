@@ -1,4 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Crowdfund stuff
+crowdfund/projects/migrations/
+crowdfund/projects/migrations/*
+crowdfund/users/migrations/
+crowdfund/users/migrations/*
+crowdfund/media/
+crowdfund/media/*
+
 # misc
 .DS_Store
 .idea
