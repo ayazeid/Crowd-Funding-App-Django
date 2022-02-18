@@ -2,10 +2,16 @@
 # Crowdfund stuff
 crowdfund/projects/migrations/
 crowdfund/projects/migrations/*
+crowdfund/users/migrations/
+crowdfund/users/migrations/*
+crowdfund/media/
+crowdfund/media/*
 
 # misc
 .DS_Store
 .idea
+media/
+migrations/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -142,3 +148,4 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+migrations/

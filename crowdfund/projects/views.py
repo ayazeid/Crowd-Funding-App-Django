@@ -1,6 +1,3 @@
-from gettext import translation
-from pyexpat import model
-from re import template
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -41,7 +38,6 @@ class ProjectCreate(CreateWithInlinesView):
 
     def get_context_data(self, **kwargs):
         data = super(ProjectCreate, self).get_context_data(**kwargs)
-        data['project_pictures'] = ProjectPictureFormSet()
         if self.request.POST:
             data['project_pictures'] = ProjectPictureFormSet(self.request.POST, self.request.FILES)
         else:
@@ -49,14 +45,8 @@ class ProjectCreate(CreateWithInlinesView):
         return data
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        form_img = context['project_pictures']
-        with translation.atomic():
-            form.instance.user = self.request.user
-            self.object = form.save()
-            if form_img.is_valid():
-                form_img.instance = self.object
-                form_img.save()
+        form.instance.project_owner = self.request.user
+        form.save()
         return super(ProjectCreate, self).form_valid(form)
 
     # Django built-in function for redirecting to another url on success

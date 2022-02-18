@@ -2,15 +2,15 @@
 <section class="py-5 text-center cf-bg-light-green">
   <div class="row py-lg-5">
     <div class="col-lg-6 col-md-8 mx-auto">
-      <h1 class="fw-light">Project directory</h1>
+      <h1 class="fw-light">Projects directory</h1>
       <p class="lead text-muted">
         This directory contains a lot of projects and campaigns that can make
         the world a better place, thanks to your donations!
       </p>
       <p>
         <a href="#projects-section" class="btn btn-success my-2">Donate</a>
-        <a href="{% url 'create-project' %}" class="btn btn-secondary my-2"
-          >Create a campaign</a
+        <a href="{% url 'create-project' %}" class="btn btn-primary my-2"
+          >Create a project</a
         >
       </p>
     </div>
@@ -21,60 +21,23 @@
   {% if object_list|length > 0 %}
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mt-5">
     {% for project in object_list %}
-    <div class="col-md-4">
-      <div class="card shadow-sm">
-        <svg
-          class="bd-placeholder-img card-img-top"
-          width="100%"
-          height="225"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-label="Placeholder: {{ project.title }}"
-          preserveAspectRatio="xMidYMid slice"
-          focusable="false"
-        >
-          <title>{{ project.title }}</title>
-          <rect width="100%" height="100%" fill="#55595c" />
-          <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-            {{ project.title }}
-          </text>
-        </svg>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card">
+        <img
+          class="card-img-top"
+          src="http://127.0.0.1:8000/media/{{project.images.all.0.picture}}"
+          alt="Card image cap"
+          style="height: 320px"
+        />
 
         <div class="card-body">
-          <p class="fs-5">{{ project.title }}</p>
-          <p class="card-text">{{ project.details|truncatechars:40 }}</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="btn-group">
-              <span class="btn btn-sm btn-outline-success disabled"
-                ><small>Starts </small>{{ project.start_date }}</span
-              >
-              <span class="btn btn-sm btn-outline-dark disabled"
-                ><small>Ends </small>{{ project.end_date }}</span
-              >
-            </div>
-            <small class="text-muted">{{ project.average_rate }}</small>
-          </div>
-
-          <div class="mt-4">
-            <small>Funds (EGP)</small>
-            <div class="progress">
-              {# Needs a lot of fixing #}
-              {% comment %} {% with percentage=(widthratio project.current_fund total_target 1) %}  {% endcomment %}
-              <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                style="width: {{percentage}}%;"
-                {% comment %} aria-valuenow="{%  widthratio project.current_fund total_target 1  %}" {% endcomment %}
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                {{project.current_fund}} / {{project.total_target}}
-              </div>
-            </div>
-          </div>
+          <h5 class="card-title">{{project.title}}</h5>
+          <p class="card-text">{{project.details|truncatechars:40}}</p>
+          <a href="#" class="btn btn-success">View Project</a>
         </div>
       </div>
     </div>
+
     {% endfor %}
   </div>
   {% else %}

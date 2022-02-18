@@ -36,4 +36,4 @@ git clone https://github.com/ayazeid/Crowd-Funding-App-Django.git
 
 #### 3- Run in the terminal at the crowd directory
 
-python3 manage.py rumserver
+python3 manage.py runserver

@@ -1,21 +1,36 @@
 {% load static %}
-<header
-  class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow"
->
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Crowdfund</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <div class="container-fluid justify-align-content-between">
+      <div class="collapse navbar-collapse">
+        <a class="navbar-brand" href="{% url 'home' %}">Crowdfund</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
 
-      <div class="collapse navbar-collapse" id="navbarsExample02">
+      <div class="d-flex">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" href="{% url 'projects' %}">Projects</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'projects' %}">Projects</a>
+            <!-- Todo:adding the authed user username later-->
+            <a class="nav-link" href="{% url 'user_profile_page' %}"
+              ><i class="bi bi-person text-light fs-4"></i
+            ></a>
+          </li>
+          <li class="nav-item">
+            <!-- Todo:adding the authed user username later-->
+            <a class="nav-link" href="{% url 'logout' %}"
+              ><i class="bi bi-box-arrow-right text-light fs-4"></i
+            ></a>
           </li>
         </ul>
       </div>

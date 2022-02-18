@@ -1,0 +1,78 @@
+
+
+{% comment %} {% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<div class = "container">  
+  <h2>Sign up</h2>
+  <form method="post">
+    {% csrf_token %}
+      {% for field in form %}  
+      <p>  
+        {{ field.label_tag }}<br>  
+        {{ field }}  
+        {% if field.help_text %}  
+          <small style="display: none ">{{ field.help_text }}</small>  
+        {% endif %}  
+        {% for error in field.errors %}  
+          <p style="color: red">{{ error }}</p>  
+        {% endfor %}  
+      </p>  
+      {% endfor %}  
+    <button type="submit">Sign up</button>  
+  </form>  
+</div>   {% endcomment %}
+{% comment %} 
+{%extends 'base.html'%}
+{% load bootstrap5 %}
+
+<h3> Sign in</h3>
+{% endblock %}
+{% block content %} {% endcomment %}
+{% comment %} <form method="post" class="w-50 mx-auto pt-5 pb-5" action="">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" value="Signin" class="boxed-btn3 w-100"/>
+    <div class="text-danger">{{msg}}</div>
+    <div class="text-danger"><a href="{% url 'jobs:signup' %}">go to create new acount?</a></div>
+  </form> {% endcomment %}
+
+
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<div class = "container">  
+  <form method="post" class="w-50 mx-auto pt-5 pb-5"enctype="multipart/form-data">
+    <h2 class='mx-auto'>Sign up</h2>
+    {% csrf_token %}
+
+      {% bootstrap_form form %}
+        
+
+       {% for field in form %}  
+      <p>    
+        {% for error in field.errors %}  
+          <p style="color: red">{{ error }}</p>  
+        {% endfor %}  
+      </p>  
+      {% endfor %}  
+      {% bootstrap_form profile %}
+        
+
+      {% for field in profile %}  
+     <p>    
+       {% for error in field.errors %}  
+         <p style="color: red">{{ error }}</p>  
+       {% endfor %}  
+     </p>  
+     {% endfor %}  
+    <input type="submit"class="boxed-btn3 w-100" value='Sign up'> 
+    <div class="text-danger"><a href="{% url 'signin' %}">do you have acount?</a></div>
+  </form>  
+</div>  
+
+
+
+{% endblock %}

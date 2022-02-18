@@ -25,21 +25,25 @@ class Project(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     reports_count = models.IntegerField(default=0)
-    # total_rate = models.IntegerField(default=0)
-    average_rate = models.FloatField(default=0)
+    rating_users_count = models.IntegerField(default=0)
+    total_rate = models.IntegerField(default=0)
     # Needs Authentication app to be done first
-    # project_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #project_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)  # Should populate category table with
     # at least one record to create a project (do not worry will not cause errors)
+    featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
 
 
+def image_upload(instance, filename):
+    return f'project_images/{instance.project_id.id}/{filename}'
+
 class ProjectPicture(models.Model):
     id = models.AutoField(primary_key=True)
-    picture = models.ImageField()
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to= image_upload)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='images')
 
 
 class Rating(models.Model):
@@ -48,6 +52,10 @@ class Rating(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     rating = models.FloatField()  # Rating out of 5
 
+    def __str__(self):
+        return self.user_rated.username + ' - ' + self.project_id.title + " rating"
+
+# 5 users , 3 -> 4* 2->2* , rating_users_count | total_rating
 
 class ProjectReport(models.Model):
     class Meta:
