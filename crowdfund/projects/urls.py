@@ -9,4 +9,5 @@ urlpatterns = [
     path('donate-project/<int:pk>', views.DonateCreate.as_view(), name='donate-project'),
     path('rate-project/<int:pk>', views.RateCreate.as_view(), name='rate-project'),
     path('delete-project/<int:pk>', views.projectDelete, name='delete-project'),
+    path('report-project/<int:pk>', views.projectReport, name='report-project'),
 ]

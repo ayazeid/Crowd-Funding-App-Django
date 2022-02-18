@@ -100,16 +100,16 @@ DATABASES = {
      }
  }
 
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'crowdfund',
+#        'NAME': 'crowddb',
 #        'USER': 'yoda',
 #        'PASSWORD': 'yoda',
 #        'HOST': 'localhost',
 #        'PORT': 5432
 #    }
-#}
+# }
 
 
 
@@ -173,8 +173,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_USE_TLS = True  
 EMAIL_HOST = 'smtp.gmail.com'  
-EMAIL_HOST_USER = 'ahmedmahmou2111998@gmail.com'  
-EMAIL_HOST_PASSWORD = 'vimiisvrsnqaywwf'  
+EMAIL_HOST_USER = 'crowd.funding.iti.website@gmail.com'  
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')  
 EMAIL_PORT = 587  
 
 
