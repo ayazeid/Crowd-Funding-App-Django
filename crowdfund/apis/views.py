@@ -13,6 +13,7 @@ class ListProjects(generics.ListAPIView):
     serializer_class = ProjectSerializer
 
 class ViewProject(generics.RetrieveAPIView):
+    #todo : review this
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     
