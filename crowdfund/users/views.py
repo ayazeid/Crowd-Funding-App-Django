@@ -62,19 +62,11 @@ def signup(request):
     if request.method == 'POST':  
         form = SignupForm(request.POST)
         profile = UserProfileForm(request.POST,request.FILES)
-<<<<<<< HEAD
-        if form.is_valid():  
-=======
         if form.is_valid() and profile.is_valid():  
->>>>>>> 034d448980305ec0d243b5d95779493e3862d54a
             # save form in the memory not in database  
             user = form.save(commit=False)  
             user.is_active = False  
             user.save() 
-<<<<<<< HEAD
-#Profile.objects.create(user=user,phone=request.POST['phone'],profile_picture=request.POST['profile_picture'],birth_date=request.POST['birth_date'],facebook_profile=request.POST['facebook_profile'],country=request.POST['country'])
-=======
->>>>>>> 034d448980305ec0d243b5d95779493e3862d54a
             uprofile=profile.save(commit=False)
             uprofile.user=user
             uprofile.save()
