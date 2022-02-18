@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from datetime import date
+from django.contrib.auth.models import User
+
 """"
     click report -> Project(UpdateView) -> template: form (ok==sumbit) -> reverse('projects')
 
