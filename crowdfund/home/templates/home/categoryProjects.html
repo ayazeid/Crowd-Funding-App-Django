@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block content %}
+<div class="categoryProjects">
+  <h1 style="margin: 1.5em">List of Projects</h1>
+  <div class="container">
+    <div class="row g-3">
+      {% for project in category_projects %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="http://127.0.0.1:8000/media/{{project.images.all.0.picture}}"
+            alt="Card image cap"
+            style="height: 320px"
+          />
+
+          <div class="card-body">
+            <h5 class="card-title">{{project.title}}</h5>
+            <p class="card-text">{{project.details}}</p>
+            <a href="#" class="btn btn-success">View Project</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

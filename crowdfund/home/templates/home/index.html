@@ -1,4 +1,19 @@
 {% extends 'base.html' %} {% block content %}
+<!-- Categories Listing -->
+<h2 style="margin: 1.5em">Category List</h2>
+
+<div class="categories">
+  <form action="{% url 'project_categories' %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Choose Category" class="btn btn-success" />
+    <select name="categories" id="" class="form-select-sm">
+      {% for cat in categories %}
+      <option value="{{cat.id}}">{{cat.category_name}}</option>
+      {% endfor %}
+    </select>
+  </form>
+</div>
+
 <!-- Highest Rated Projects -->
 <h2 style="margin: 1.5em">Highest Rated Projects</h2>
 <div class="w3-content w3-display-container" style="height: 50vh">
