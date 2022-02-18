@@ -17,13 +17,6 @@ class Category(models.Model):
         return self.category_name
 
 
-class Tag(models.Model):
-    id = models.AutoField(primary_key=True)
-    tag_name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.tag_name
-
 
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
@@ -37,7 +30,7 @@ class Project(models.Model):
     rating_users_count = models.IntegerField(default=0)
     total_rate = models.IntegerField(default=0)
     # Needs Authentication app to be done first
-    project_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    project_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)  # Should populate category table with
     # at least one record to create a project (do not worry will not cause errors)
     featured = models.BooleanField(default=False)
@@ -96,3 +89,11 @@ class UserDonation(models.Model):
     id = models.AutoField(primary_key=True)
     user_donated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+class Tag(models.Model):
+    id = models.AutoField(primary_key=True)
+    tag_name = models.CharField(max_length=30)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return self.tag_name
