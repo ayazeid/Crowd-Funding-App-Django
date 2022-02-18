@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.models import inlineformset_factory
-from .models import Project, ProjectPicture, Comment, Tag, UserDonation
+from .models import Project, ProjectPicture, Comment, Rating, Tag, Rating
 
 
 class  ProjectPictureForm(forms.ModelForm):
@@ -59,13 +59,23 @@ class  ProjectCommentForm(forms.ModelForm):
         #     super(ProjectCommentForm, self).__init__(*args, **kwargs)
 
 
-# class ProjectDonationForm(forms.ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super(ProjectDonationForm, self).__init__(*args, **kwargs)
-#         for visible in self.visible_fields():
-#             visible.field.widget.attrs['class'] = 'form-control'
+class ProjectRatingForm(forms.ModelForm):
+    RATING_CHOICES = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+    )
 
-#     class Meta:
-#         model = UserDonation
-#         fields = ['amount',]
+    rating = forms.ChoiceField(choices=RATING_CHOICES)
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectRatingForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Rating
+        fields = '__all__'
 
