@@ -131,7 +131,7 @@ def signin_user(request):
         if user is not None and user.is_active:
           login(request,user)     
           return redirect(user_profile)
-        else:
+        elif not user.is_active:
             return HttpResponse('you should active your acount first... chick your Email')
      except:
          myform = SigninForm()
