@@ -1,11 +1,11 @@
 from multiprocessing import context
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from projects.models import Project,Category,Tag
 from django.db.models import Count
 # Create your views here.
 
 def top_rated(request):
-
+ if (request.user.is_authenticated):
     categories = Category.objects.all()
 
     latest_projects = Project.objects.all().order_by('-id')[:5]
@@ -19,21 +19,28 @@ def top_rated(request):
         top_rated_projects.append(project)
 
     return render(request,'home/index.html' ,{"latest_projects":latest_projects,"top_rated_projects":top_rated_projects,"categories":categories,"admin_projects":admin_projects })
-
+ else:
+     return redirect('signin')
 def projectCategories(request):
+  if (request.user.is_authenticated):  
     if request.method == 'POST':
         category = request.POST.get('categories')
         category_projects = Project.objects.filter(category_id=category)
         return render(request,'home/categoryProjects.html' , {"category_projects":category_projects })
-
+  else:
+     return redirect('signin')
 
 def SearchTitle(request):
+  if (request.user.is_authenticated):
     title=request.POST.get('title')
     search_by_title =Project.objects.filter(title__contains=title)
     return render(request,'home/searchTitle.html' ,{"search_by_title":search_by_title})
-
+  else:
+     return redirect('signin')
 def SearchTag(request):
+ if (request.user.is_authenticated):
     tag = request.POST.get('tag')
     search_by_tag=Tag.objects.filter(tag_name__contains=tag)
     return render(request,'home/searchTag.html' ,{"search_by_tag":search_by_tag })
-    
+ else:
+     return redirect('signin')

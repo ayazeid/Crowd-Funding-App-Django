@@ -94,6 +94,7 @@
 
       <hr />
       {% endfor %} {{ form.as_p }}
+      <a href="{% url 'rate-project' project.id %}" class="btn btn-info">Rate Project</a>
       <a href="{% url 'donate-project' project.id %}" class="btn btn-success"
         >Donate</a
       >

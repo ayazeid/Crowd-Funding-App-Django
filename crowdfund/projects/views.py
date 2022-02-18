@@ -4,9 +4,8 @@ from extra_views import CreateWithInlinesView, InlineFormSetFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.http import Http404, HttpResponse
-
-from .forms import ProjectCreateForm, ProjectPictureFormSet, ProjectTagFormSet
-from .models import Project, ProjectPicture, Comment, Tag, UserDonation, ProjectReport, ReportComment
+from .models import Project, ProjectPicture, Comment, Tag, UserDonation, ProjectReport, ReportComment, Rating
+from .forms import ProjectCreateForm, ProjectRatingForm, ProjectPictureFormSet, ProjectTagFormSet
 from datetime import datetime
 """
 --Project views--
@@ -145,3 +144,24 @@ class DonateCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('details-project', kwargs={'pk': self.object.project.id})
+
+
+"""
+--Rating views--
+"""
+class RateCreate(LoginRequiredMixin, CreateView):
+    model = Rating
+    login_url = reverse_lazy('signin')
+    form_class = ProjectRatingForm
+
+    def get_context_data(self, **kwargs):
+        context = super(RateCreate, self).get_context_data(**kwargs)
+        context['project_id'] = self.kwargs["pk"]
+        context['user_rated_id'] = self.request.user.id
+        return context
+        
+    def get_success_url(self):
+        return reverse('details-project', kwargs={'pk': self.object.project_id.id})
+
+    def form_invalid(self, form):
+        return redirect("projects")

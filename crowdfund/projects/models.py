@@ -47,11 +47,23 @@ class ProjectPicture(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='images')
 
 
+
+RATING_CHOICES = (
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+)
+
 class Rating(models.Model):
+    class Meta:
+        unique_together = (('user_rated', 'project_id'),)
+
     id = models.AutoField(primary_key=True)
     user_rated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    rating = models.FloatField()  # Rating out of 5
+    rating = models.IntegerField(choices=RATING_CHOICES)  # Rating out of 5
 
     def __str__(self):
         return self.user_rated.username + ' - ' + self.project_id.title + " rating"

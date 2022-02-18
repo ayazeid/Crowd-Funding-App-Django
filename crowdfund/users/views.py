@@ -25,6 +25,7 @@ from django.db.models import Sum
 # Create your views here.
 # - He can view his profile
 def user_profile(request):
+ if (request.user.is_authenticated):
     loged_user = Profile.objects.get(user=request.user)
     user_projects = Project.objects.filter(project_owner=request.user)
     user_donations= UserDonation.objects.filter(user_donated=request.user)
@@ -32,6 +33,8 @@ def user_profile(request):
     reported_projects = ProjectReport.objects.all()
     context = {'user': loged_user,'projects':user_projects,'donations':user_donations,'total_donations':total_donations_amount,'reported_projects':reported_projects}
     return render(request, 'users/user_profile.html', context)
+ else:
+     return redirect('signin')
 
 
 # - He can view his projects
@@ -41,6 +44,7 @@ def user_profile(request):
 # - He can have extra optional info other than the info he added
 # while registration (Birthdate, facebook profile, country), done
 def update_profile(request):
+ if (request.user.is_authenticated):
     if request.method == 'POST':
         userform=EditUserForm(request.POST,instance=request.user)
         forminstance=UserProfileForm(request.POST, request.FILES,instance=Profile.objects.get(user=request.user))
@@ -55,14 +59,17 @@ def update_profile(request):
         forminstance = UserProfileForm(instance=Profile.objects.get(user=request.user))
     context = {'form': forminstance,'userform':userform}
     return render(request, 'users/edit_user_profile.html', context)
-
+ else:
+     return redirect('signin')
 
 # - User can delete his account (Note that there must be a
 # confirmation message before deleting), done
 def delete_profile(request):
+ if (request.user.is_authenticated):
     User.objects.get(username=request.user.username).delete()
     return HttpResponse('User deleted successfully')
-
+ else:
+     return redirect('signin')
   
 def signup(request):  
     if request.method == 'POST':  
