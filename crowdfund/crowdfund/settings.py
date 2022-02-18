@@ -100,12 +100,14 @@ DATABASES = {
     }
 }
 
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'crowdfund',
+#         'USER': 'yoda',
+#         'PASSWORD': 'yoda',
+#         'HOST': 'localhost',
+#         'PORT': 5432
 #     }
 # }
 
@@ -117,6 +119,8 @@ DATABASES = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
 
 
 

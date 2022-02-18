@@ -1,10 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from extra_views import CreateWithInlinesView, InlineFormSetFactory
-from django.db import transaction
 from django.contrib.auth.mixins import LoginRequiredMixin
-import json
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.http import Http404, HttpResponse
 
 from .forms import ProjectCreateForm, ProjectPictureFormSet, ProjectTagFormSet
 from .models import Project, ProjectPicture, Comment, Tag
@@ -23,6 +22,11 @@ class ProjectList(ListView):
 
 class ProjectDetail(DetailView):
     model = Project
+    def get_context_data(self, **kwargs):
+        data = super(ProjectDetail, self).get_context_data(**kwargs)
+        data['current_user'] = self.request.user
+        data['pics'] = ProjectPicture.objects.filter(project_id = self.kwargs["pk"])
+        return data
 
 
 class ProjectPictureMetaInline(InlineFormSetFactory):
@@ -33,7 +37,6 @@ class ProjectPictureMetaInline(InlineFormSetFactory):
 class ProjectTagMetaInline(InlineFormSetFactory):
     model = Tag
     fields = '__all__'
-
 
 
 class ProjectCreate(LoginRequiredMixin, CreateWithInlinesView):
@@ -69,9 +72,17 @@ class ProjectCreate(LoginRequiredMixin, CreateWithInlinesView):
         return reverse('projects') #localhost:8000/projects/run-for-amputees
 
 
-class ProjectDelete(DeleteView):
-    model = Project
 
+def projectDelete(request, pk):
+    project = Project.objects.get(id=pk)
+    current_fund_percentage = (project.current_fund / project.total_target)*100
+    if  current_fund_percentage < 25 and request.user.id == project.project_owner.id:
+        project.delete()
+        return redirect("projects")
+    else:
+        return HttpResponse("Not allowed to delete this project!")
+
+    
 
 """
 --Comments views--
@@ -80,23 +91,14 @@ class ProjectDelete(DeleteView):
 
 class CommentCreate(CreateView):
     model = Comment
-    # template_name = 'projects/project_detail.html'
     fields = ['content', 'project', 'user_commented']
-    # def get_absolute_url(self):
-    #     return reverse('details-project', args=[str(self.pk)])
-
-    # def form_valid(self, form):
-    #     project = get_object_or_404(Project, project=self.kwargs['id'])
-    #     form.instance.user_commented = self.request.user
-    #     form.instance.project = project
-    #     form.save()
-    #     return super().form_valid(form)
     
     def get_context_data(self, **kwargs):
         context = super(CommentCreate, self).get_context_data(**kwargs)
-        print(self.kwargs["pk"])
+        # print(self.kwargs["pk"])
         context['pro_id'] = self.kwargs["pk"]
+        context['user_commented_id'] = self.request.user.id
         return context
 
     def get_success_url(self):
-        return reverse('projects')
+        return reverse('details-project', kwargs={'pk': self.object.project.id})
