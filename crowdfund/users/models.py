@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 # egyptian phone number validation
 def validate_egyptian_number(value):
-    if not any(re.match(pattern, value) for pattern in [r"011+[0-9]{8}", r"012+[0-9]{8}", r"015+[0-9]{8}"]):
+    if not any(re.match(pattern, value) for pattern in [r"011+[0-9]{8}", r"012+[0-9]{8}", r"015+[0-9]{8}",r"010+[0-9]{8}"]):
         raise ValidationError(
             _('%(value)s is not a valid egyptian number'),
             params={'value': value},
@@ -19,7 +19,7 @@ def validate_egyptian_number(value):
 
 def image_upload(instance, imagename):
     extension = imagename.split(".")[1]
-    return "users/%s.%s" % (instance.id, extension)
+    return "users/%s.%s" % (instance.user.id, extension)
 
 
 

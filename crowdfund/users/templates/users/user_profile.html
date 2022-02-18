@@ -131,6 +131,18 @@
       >
         Donations
       </button>
+      {%if user.user.is_staff%}
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseExamplethree"
+        aria-expanded="false"
+        aria-controls="collapseExamplethree"
+      >
+        Reports
+      </button>
+      {%endif%}
     </p>
 
     <!--    user projects -->
@@ -150,7 +162,7 @@
                   <th scope="col">Start Date</th>
                   <th scope="col">End Date</th>
                   <th scope="col">Rate</th>
-                  <th scope="col">Reports</th>
+                  <th scope="col">Comments reports</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -165,14 +177,67 @@
                   <td>{{project.start_date}}</td>
                   <td>{{project.end_date}}</td>
                   <td>{{project.total_rate}}</td>
-                  <td>{{project.reports_count}}</td>
+                  <td>
+                    <p>Comment Owner</p>
+                    <p>Comment Details</p>
+                  </td>
                   <td>
                     <a
                       class="btn btn-outline-dark btn-sm"
                       href="{% url 'details-project' project.id %}"
                       >View</a
                     >
-                    <a class="btn btn-outline-danger btn-sm">Delete</a>
+                    <a
+                      class="btn btn-danger"
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdropproject"
+                      >Delete Project</a
+                    >
+
+                    <!-- Modal -->
+                    <div
+                      class="modal fade"
+                      id="staticBackdropproject"
+                      data-bs-backdrop="static"
+                      data-bs-keyboard="false"
+                      tabindex="-1"
+                      aria-labelledby="staticBackdropLabeltwo"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabeltwo">
+                              Modal title
+                            </h5>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to delete your project
+                            permanently?
+                          </div>
+                          <div class="modal-footer">
+                            <a
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                              >Cancel</a
+                            >
+                            <a
+                              type="button"
+                              class="btn btn-primary"
+                              href="{%url 'delete-project' project.id %}"
+                              >Confirm</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </td>
                 </tr>
                 {%endfor%}
@@ -190,8 +255,8 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
+                <th scope="col">Project Title</th>
+                <th scope="col">/th></th>
                 <th scope="col">Last</th>
                 <th scope="col">Handle</th>
               </tr>
@@ -213,6 +278,55 @@
                 <th scope="row">3</th>
                 <td colspan="2">Larry the Bird</td>
                 <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--    Reports to admin -->
+    <div class="collapse" id="collapseExamplethree">
+      <div class="card card-body">
+        <div class="container my-5">
+          <h3 class="display-6">Reported Projects</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Project ID</th>
+                <th scope="col">Project title</th>
+                <th scope="col">Project Owner</th>
+                <th scope="col">Reports</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="container my-5">
+          <h3 class="display-6">Reported Comments</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Project ID</th>
+                <th scope="col">Project title</th>
+                <th scope="col">Project Owner</th>
+                <th scope="col">Comment Owner</th>
+                <th scope="col">Comment Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Otto</td>
               </tr>
             </tbody>
           </table>
