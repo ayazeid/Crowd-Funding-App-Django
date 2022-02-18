@@ -17,7 +17,6 @@ class Category(models.Model):
         return self.category_name
 
 
-
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=120)
@@ -57,7 +56,6 @@ class Rating(models.Model):
     def __str__(self):
         return self.user_rated.username + ' - ' + self.project_id.title + " rating"
 
-# 5 users , 3 -> 4* 2->2* , rating_users_count | total_rating
 
 class ProjectReport(models.Model):
     class Meta:
@@ -89,11 +87,13 @@ class UserDonation(models.Model):
     id = models.AutoField(primary_key=True)
     user_donated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
 
 class Tag(models.Model):
     id = models.AutoField(primary_key=True)
-    tag_name = models.CharField(max_length=30)
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, default=1)
+    tag_name = models.CharField(max_length=30, default='')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.tag_name
+

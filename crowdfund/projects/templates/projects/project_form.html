@@ -9,6 +9,8 @@
                     {{ form.as_p }}
                     <p>Project pictures:</p>
                     {{ project_pictures.as_p }}
+                    <p>Project tags:</p>
+                    {{ project_tags.as_p }}
                     <input type="submit" value="Create project" class="btn btn-success">
                     <a href="{% url 'projects' %}" class="btn btn-danger">Cancel</a>
                 </form>
