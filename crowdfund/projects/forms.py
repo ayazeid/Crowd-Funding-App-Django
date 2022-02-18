@@ -1,6 +1,18 @@
-from .models import Project
 from django import forms
+from django.forms.models import inlineformset_factory
+from .models import Project, ProjectPicture
 
+
+class  ProjectPictureForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProjectPictureForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control cf-dy-hidden'
+            visible.label = ''
+
+    class Meta:
+        model = ProjectPicture
+        fields = ['picture',]
 
 class ProjectCreateForm(forms.ModelForm):
     """
@@ -14,4 +26,8 @@ class ProjectCreateForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ['title', 'details', 'total_target', 'current_fund', 'start_date', 'end_date']
+        fields = ['title', 'total_target', 'start_date', 'end_date', 'category', 'details']
+
+ProjectPictureFormSet = inlineformset_factory(
+    Project, ProjectPicture, form=ProjectPictureForm, fields=['picture'], extra=5, can_delete=False
+)

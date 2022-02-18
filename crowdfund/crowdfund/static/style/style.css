@@ -1,20 +1,29 @@
 :root {
-    --cf-green: 90 211 155
+  --cf-green: 90, 211, 155;
 }
+
+body {
+  overflow-x: hidden;
+}
+
 .bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 @media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-    }
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
 }
 
 .cf-bg-light-green {
-    background-color: rgba(var(--cf-green) / 0.44);
+  background-color: rgba(var(--cf-green), 0.44);
+}
+
+.cf-text-green {
+  color: rgb(var(--cf-green));
 }

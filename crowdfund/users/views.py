@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -10,7 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str  
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode  
 from django.template.loader import render_to_string  
- 
+
 from django.contrib.auth.models import User  
 from django.core.mail import EmailMessage  
 
@@ -59,12 +61,17 @@ def delete_profile(request):
 def signup(request):  
     if request.method == 'POST':  
         form = SignupForm(request.POST)
+        profile = UserProfileForm(request.POST,request.FILES)
         if form.is_valid():  
             # save form in the memory not in database  
             user = form.save(commit=False)  
             user.is_active = False  
             user.save() 
-            Profile.objects.create(user=user)
+#Profile.objects.create(user=user,phone=request.POST['phone'],profile_picture=request.POST['profile_picture'],birth_date=request.POST['birth_date'],facebook_profile=request.POST['facebook_profile'],country=request.POST['country'])
+            uprofile=profile.save(commit=False)
+            uprofile.user=user
+            uprofile.save()
+           
             # to get the domain of the current site  
             current_site = get_current_site(request)  
             mail_subject = 'Activation link has been sent to your email id'  
@@ -82,22 +89,32 @@ def signup(request):
             return HttpResponse('Please confirm your email address to complete the registration')  
     else:  
         form = SignupForm()  
-       
-    return render(request, 'signup.html', {'form': form})  
+        profile= UserProfileForm()
+    return render(request, 'signup.html', {'form': form,'profile':profile})  
 
 
-def activate(request, uidb64, token):  
+def activate(request, uidb64, token):
     try:  
         uid = force_str(urlsafe_base64_decode(uidb64))  
         user = User.objects.get(pk=uid)  
+    
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):  
         user = None  
-    if user is not None and TokenGenerator().check_token(user, token):  
-        user.is_active = True  
-        user.save()
-        return render(request,'confirmation.html')  
+    if user is not None and TokenGenerator().check_token(user, token) and user.is_active == False: 
+            print(user.date_joined)
+            email_sent_at = user.date_joined
+            now = datetime.now(timezone.utc)
+            date_diffrince = (
+               now-email_sent_at   
+            ).seconds / 60
+            print(date_diffrince)
+            if date_diffrince < (24 * 60):
+                user.is_active = True  
+                user.save()
+                return render(request,'confirmation.html')  
     else:  
         return HttpResponse('Activation link is invalid!')  
+  
     
     
     
