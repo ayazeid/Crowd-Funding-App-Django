@@ -111,5 +111,18 @@
     </select>
   </form>
 </div>
-
+<!-- Search By Tag -->
+<h2 style="margin: 1.5em" id="search-tag">Search By Tag</h2>
+<div class="container Search">
+  <form action="{% url 'search_by_tag' %}" method="POST">
+    {% csrf_token %}
+    <input
+      type="text"
+      name="tag"
+      class="form-control-sm rounded"
+      placeholder="Enter Project Tag"
+    />
+    <input type="submit" value="Search" />
+  </form>
+</div>
 {% endblock %}
