@@ -1,7 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from urllib import request
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from extra_views import CreateWithInlinesView, InlineFormSetFactory
+from django.http import Http404, HttpResponse
+from django.utils.functional import lazy
 
 
 
@@ -22,6 +25,11 @@ class ProjectList(ListView):
 
 class ProjectDetail(DetailView):
     model = Project
+    def get_context_data(self, **kwargs):
+        data = super(ProjectDetail, self).get_context_data(**kwargs)
+        data['current_user'] = self.request.user
+        data['pics'] = ProjectPicture.objects.filter(project_id = self.kwargs["pk"])
+        return data
 
 
 class ProjectPictureMetaInline(InlineFormSetFactory):
@@ -56,9 +64,17 @@ class ProjectCreate(CreateWithInlinesView):
         return reverse('projects') #localhost:8000/projects/run-for-amputees
 
 
-class ProjectDelete(DeleteView):
-    model = Project
 
+def projectDelete(request, pk):
+    project = Project.objects.get(id=pk)
+    current_fund_percentage = (project.current_fund / project.total_target)*100
+    if  current_fund_percentage < 25 and request.user.id == project.project_owner.id:
+        project.delete()
+        return redirect("projects")
+    else:
+        return HttpResponse("Not allowed to delete this project!")
+
+    
 
 """
 --Comments views--
@@ -71,7 +87,7 @@ class CommentCreate(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super(CommentCreate, self).get_context_data(**kwargs)
-        print(self.kwargs["pk"])
+        # print(self.kwargs["pk"])
         context['pro_id'] = self.kwargs["pk"]
         context['user_commented_id'] = self.request.user.id
         return context
