@@ -31,6 +31,7 @@ class ProjectDetail(DetailView):
         data['total_donations'] = UserDonation.objects.filter(project_id=self.kwargs["pk"]).aggregate(Sum('amount')).get('amount__sum')
         try:
             data['rating'] = total_rate / raters_count
+            Project.objects.filter(id=self.kwargs["pk"]).update(total_rate=data['rating'],current_fund=data['total_donations'])   
         except:
             data['rating'] = 0
         return data
