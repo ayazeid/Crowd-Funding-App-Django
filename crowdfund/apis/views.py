@@ -170,8 +170,6 @@ class RateProject(APIView):
                     return Response({'msg':"You can't rate the same project twice!"},status.HTTP_400_BAD_REQUEST)
                 user_rating = request.POST.get('rating')
                 Rating.objects.create(project_id=project,user_rated=user,rating=user_rating)
-                project.rating_users_count += 1
-                project.total_rate += int(user_rating)
                 project.save()
                 return Response({'msg':"Rating sent successfully"},status.HTTP_201_CREATED)
             except:
