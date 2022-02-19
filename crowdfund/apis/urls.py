@@ -10,8 +10,10 @@ urlpatterns = [
     path('view_project/<int:pk>', ViewProject.as_view(),name='view_project'),
     path('delete_project/<int:pk>/', DeleteProject.as_view(),name='delete_project'),
     path('update_project/<int:pk>/', UpdateProject.as_view(),name='update_project'),
-    path('update_project_images/<int:id>/', UpdateProjectImages.as_view(),name='update_project_images'),
     path('donate_project/<int:id>/', DonateFund.as_view(),name='donate_project'),
     path('report_project/<int:id>/', ReportProject.as_view(),name='report_project'),
     path('rate_project/<int:id>/', RateProject.as_view(),name='rate_project'),
+    path('comment/<int:pk>/', CommentProject.as_view(),name='comment'),
+    # path('report_comment/<int:pk>/', ReportComment.as_view(),name='report_comment'),
+
 ]

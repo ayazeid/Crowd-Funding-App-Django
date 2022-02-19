@@ -4,9 +4,8 @@ from extra_views import CreateWithInlinesView, InlineFormSetFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.http import Http404, HttpResponse
-
-from .forms import ProjectCreateForm, ProjectPictureFormSet, ProjectTagFormSet
-from .models import Project, ProjectPicture, Comment, Tag, UserDonation, ProjectReport
+from .models import Project, ProjectPicture, Comment, Tag, UserDonation, ProjectReport, ReportComment, Rating
+from .forms import ProjectCreateForm, ProjectRatingForm, ProjectPictureFormSet, ProjectTagFormSet
 from datetime import datetime
 """
 --Project views--
@@ -74,6 +73,7 @@ class ProjectCreate(LoginRequiredMixin, CreateWithInlinesView):
 
 
 def projectDelete(request, pk):
+ if (request.user.is_authenticated):
     project = Project.objects.get(id=pk)
     current_fund_percentage = (project.current_fund / project.total_target)*100
     if  current_fund_percentage < 25 and request.user.id == project.project_owner.id:
@@ -81,9 +81,11 @@ def projectDelete(request, pk):
         return redirect("projects")
     else:
         return HttpResponse("Not allowed to delete this project!")
-
+ else:
+         return redirect('signin')
 
 def projectReport(request, pk):
+  if (request.user.is_authenticated):
     project = Project.objects.get(id=pk)
     try:
         new_report = ProjectReport(project=project, user_reported=request.user, report_date=datetime.today().strftime('%Y-%m-%d'))
@@ -93,14 +95,33 @@ def projectReport(request, pk):
         return redirect("projects")
     except:
         return redirect("projects")
+  else:
+         return redirect('signin')  
 
 """
 --Comments views--
 """
 
+def commentReport(request, cpk):
+  if (request.user.is_authenticated):
+    comment = Comment.objects.get(id=cpk)
+    print(comment.id)
+    print(comment.content)
+    # return redirect("projects")
+    try:
+        new_report = ReportComment(comment=comment, user_reported=request.user, report_date=datetime.today().strftime('%Y-%m-%d'))
+        new_report.save()
+        comment.reports_count = comment.reports_count + 1
+        comment.save()
+        return redirect("projects")
+    except:
+        return redirect("projects")
+  else:
+         return redirect('signin')
 
-class CommentCreate(CreateView):
+class CommentCreate(LoginRequiredMixin,CreateView):
     model = Comment
+    login_url = reverse_lazy('signin')
     fields = ['content', 'project', 'user_commented']
     
     def get_context_data(self, **kwargs):
@@ -131,3 +152,24 @@ class DonateCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('details-project', kwargs={'pk': self.object.project.id})
+
+
+"""
+--Rating views--
+"""
+class RateCreate(LoginRequiredMixin, CreateView):
+    model = Rating
+    login_url = reverse_lazy('signin')
+    form_class = ProjectRatingForm
+
+    def get_context_data(self, **kwargs):
+        context = super(RateCreate, self).get_context_data(**kwargs)
+        context['project_id'] = self.kwargs["pk"]
+        context['user_rated_id'] = self.request.user.id
+        return context
+        
+    def get_success_url(self):
+        return reverse('details-project', kwargs={'pk': self.object.project_id.id})
+
+    def form_invalid(self, form):
+        return redirect("projects")

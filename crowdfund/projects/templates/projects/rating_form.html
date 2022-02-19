@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block title %}Rate project{% endblock title %}{% block content %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="project_id" id="id_project" value="{{project_id}}" />
+                    <input type="hidden" name="user_rated" id="id_user_rated" value="{{user_rated_id}}" />
+                    <input name="rating" id="rating" />
+                    <input type="submit" value="rate" class="btn btn-success">
+                    <a href="{% url 'projects' %}" class="btn btn-danger">Cancel</a>
+                </form>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+{% endblock content %}
