@@ -7,7 +7,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="project" id="id_project" value="{{project_id}}" />
                     <input type="hidden" name="user_donated" id="id_user_donated" value="{{user_donated_id}}" />
-                    <input name="amount" id="amount" />
+                    <input name="amount" id="amount" pattern="[0-9]+" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
                     <input type="submit" value="Donate" class="btn btn-success">
                     <a href="{% url 'projects' %}" class="btn btn-danger">Cancel</a>
                 </form>

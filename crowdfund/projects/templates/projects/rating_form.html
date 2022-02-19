@@ -7,7 +7,8 @@
                     {% csrf_token %}
                     <input type="hidden" name="project_id" id="id_project" value="{{project_id}}" />
                     <input type="hidden" name="user_rated" id="id_user_rated" value="{{user_rated_id}}" />
-                    <input name="rating" id="rating" />
+                    <p>Rate this project with a value from 1 to 5</p>
+                    <input name="rating" id="rating" pattern="[1-5]" />
                     <input type="submit" value="rate" class="btn btn-success">
                     <a href="{% url 'projects' %}" class="btn btn-danger">Cancel</a>
                 </form>

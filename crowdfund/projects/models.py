@@ -2,12 +2,18 @@ from django.conf import settings
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
+import re
+from django.forms import ValidationError
+from django.utils.translation import gettext_lazy as _
+
 
 """"
     click report -> Project(UpdateView) -> template: form (ok==sumbit) -> reverse('projects')
 
     click donate -> project(UpdateView):current_fund, UserDonations(UpdateView):{user_id-project_id-donation_amount} -> template: form (ok==sumbit) -> reverse('projects')
 """
+
+
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
@@ -91,12 +97,8 @@ class Comment(models.Model):
  
 
 class ReportComment(models.Model):
-    class Meta:
-        unique_together = (('comment', 'user_reported', 'report_date'),)
     id = models.AutoField(primary_key=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user_reported = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    report_date = models.DateField()
 
 
 class UserDonation(models.Model):

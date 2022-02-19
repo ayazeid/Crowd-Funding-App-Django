@@ -30,8 +30,9 @@
       {% for tag in project.tag_set.all %} 
       {{tag.tag_name}} &nbsp;-
       {% endfor %} <br>
-      Funding: {{project.current_fund}} /
+      Funding: {{total_donations}} /
       {{project.total_target}}<br />
+      Rating: {{ rating }}<br />
       Start date: {{project.start_date}}<br />
       End date: {{project.end_date}}<br />
       Average rate: {{project.total_rate}}<br />

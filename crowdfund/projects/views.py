@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.db.models import Sum
 from django.urls import reverse, reverse_lazy
 from extra_views import CreateWithInlinesView, InlineFormSetFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +27,13 @@ class ProjectDetail(DetailView):
         data = super(ProjectDetail, self).get_context_data(**kwargs)
         data['current_user'] = self.request.user
         data['pics'] = ProjectPicture.objects.filter(project_id = self.kwargs["pk"])
+        total_rate = Rating.objects.filter(project_id=self.kwargs["pk"]).aggregate(Sum('rating')).get('rating__sum')
+        raters_count = Rating.objects.filter(project_id=self.kwargs["pk"]).count()
+        data['total_donations'] = UserDonation.objects.filter(project_id=self.kwargs["pk"]).aggregate(Sum('amount')).get('amount__sum')
+        try:
+            data['rating'] = total_rate / raters_count
+        except:
+            data['rating'] = 0
         return data
 
 
@@ -50,7 +58,6 @@ class ProjectCreate(LoginRequiredMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         data = super(ProjectCreate, self).get_context_data(**kwargs)
         if self.request.POST:
-            print(self.request.POST)
             data['project_pictures'] = ProjectPictureFormSet(self.request.POST, self.request.FILES)
             data['project_tags'] = ProjectTagFormSet(self.request.POST)
         else:
@@ -74,6 +81,7 @@ class ProjectCreate(LoginRequiredMixin, CreateWithInlinesView):
 
 
 def projectDelete(request, pk):
+ if (request.user.is_authenticated):
     project = Project.objects.get(id=pk)
     current_fund_percentage = (project.current_fund / project.total_target)*100
     if  current_fund_percentage < 25 and request.user.id == project.project_owner.id:
@@ -81,9 +89,11 @@ def projectDelete(request, pk):
         return redirect("projects")
     else:
         return HttpResponse("Not allowed to delete this project!")
-
+ else:
+         return redirect('signin')
 
 def projectReport(request, pk):
+  if (request.user.is_authenticated):
     project = Project.objects.get(id=pk)
     try:
         new_report = ProjectReport(project=project, user_reported=request.user, report_date=datetime.today().strftime('%Y-%m-%d'))
@@ -93,12 +103,15 @@ def projectReport(request, pk):
         return redirect("projects")
     except:
         return redirect("projects")
+  else:
+         return redirect('signin')  
 
 """
 --Comments views--
 """
 
 def commentReport(request, cpk):
+  if (request.user.is_authenticated):
     comment = Comment.objects.get(id=cpk)
     print(comment.id)
     print(comment.content)
@@ -111,10 +124,12 @@ def commentReport(request, cpk):
         return redirect("projects")
     except:
         return redirect("projects")
+  else:
+         return redirect('signin')
 
-
-class CommentCreate(CreateView):
+class CommentCreate(LoginRequiredMixin,CreateView):
     model = Comment
+    login_url = reverse_lazy('signin')
     fields = ['content', 'project', 'user_commented']
     
     def get_context_data(self, **kwargs):
@@ -141,14 +156,26 @@ class DonateCreate(LoginRequiredMixin, CreateView):
         context = super(DonateCreate, self).get_context_data(**kwargs)
         context['project_id'] = self.kwargs["pk"]
         context['user_donated_id'] = self.request.user.id
-        total_donations= UserDonation.objects.filter(project_id=self.kwargs["pk"]).aggregate(Sum('amount')).get('amountsum')
-        project = Project.objects.filter(id=self.kwargs["pk"])[0]
-        project.current_fund = total_donations
-        project.save()
         return context
+
+    def form_valid(self, form):
+        # print(self.object)
+        # context = self.get_context_data()
+        # project_id = context['project_id']
+        # # donation_amount = self.object.amount
+        # project = Project.objects.filter(id=project_id)[0]
+        # project.current_fund += 2
+        # project.save()
+        form.save()
+        return super(DonateCreate, self).form_valid(form)
+
 
     def get_success_url(self):
         return reverse('details-project', kwargs={'pk': self.object.project.id})
+    
+    # def form_invalid(self, form):
+    #     return redirect("projects")
+
 
 
 """

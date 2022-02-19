@@ -162,7 +162,7 @@
                   <th scope="col">Start Date</th>
                   <th scope="col">End Date</th>
                   <th scope="col">Rate</th>
-                  <th scope="col">Comments reports</th>
+                 
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -177,10 +177,7 @@
                   <td>{{project.start_date}}</td>
                   <td>{{project.end_date}}</td>
                   <td>{{project.total_rate}}</td>
-                  <td>
-                    <p>Comment Owner</p>
-                    <p>Comment Details</p>
-                  </td>
+                 
                   <td>
                     <a
                       class="btn btn-outline-dark btn-sm"
@@ -315,13 +312,25 @@
               </tr>
             </thead>
             <tbody>
+            
+              {%for reported_comment in reported_comments%}
+             
               <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Otto</td>
+                <th scope="row">{{reported_comment.comment.project.id}}</th>
+                <td>{{reported_comment.comment.project.title}}</td>
+                <td>{{reported_comment.comment.project.project_owner}}</td>
+                <td>{{reported_comment.comment.user_commented}}</td>
+                <td>{{reported_comment.comment.content}}</td>
+                <td><a
+                  class="btn btn-outline-dark btn-sm"
+                  href="{% url 'details-project' reported_comment.comment.project.id %}"
+                  >View</a</td>
               </tr>
+              </tr>
+             {%endfor%}
+             
+              
+             
             </tbody>
           </table>
         </div>
