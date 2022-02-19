@@ -6,9 +6,11 @@ class ProjectSerializer(serializers.ModelSerializer):
     average_rate = serializers.SerializerMethodField('calc_average_rate')
     def calc_average_rate(self, project):
         try:
+            print(Rating.objects.filter(project_id=project).aggregate(Sum('rating')).get('rating__sum'))
+            print(Rating.objects.filter(project_id=project).count())
             average_rate = Rating.objects.filter(project_id=project).aggregate(Sum('rating')).get('rating__sum') / Rating.objects.filter(project_id=project).count()
             return average_rate
-        except ZeroDivisionError:
+        except:
             return 0 
     
     class Meta:
