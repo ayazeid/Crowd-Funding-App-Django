@@ -10,4 +10,5 @@ urlpatterns = [
     path('rate-project/<int:pk>', views.RateCreate.as_view(), name='rate-project'),
     path('delete-project/<int:pk>', views.projectDelete, name='delete-project'),
     path('report-project/<int:pk>', views.projectReport, name='report-project'),
+    path('report-comment/<int:cpk>', views.commentReport, name='report-comment'),
 ]
