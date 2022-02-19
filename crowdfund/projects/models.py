@@ -97,9 +97,13 @@ class Comment(models.Model):
  
 
 class ReportComment(models.Model):
-    id = models.AutoField(primary_key=True)
+    class Meta:
+        unique_together = (('comment', 'user_reported', 'report_date'),)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user_reported = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
+    report_date = models.DateField()
+    def str(self):
+        return self.user_reported.username + ' - ' + self.comment.content + " report"
 
 class UserDonation(models.Model):
     id = models.AutoField(primary_key=True)

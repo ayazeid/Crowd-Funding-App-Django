@@ -103,7 +103,7 @@ WSGI_APPLICATION = 'crowdfund.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'crowdfund',
+       'NAME': 'crowdfunddb',
        'USER': 'yoda',
        'PASSWORD': 'yoda',
        'HOST': 'localhost',

@@ -157,12 +157,8 @@
                   <th scope="col">ID</th>
                   <th scope="col">Title</th>
                   <th scope="col">Category</th>
-                  <th scope="col">Total Target</th>
-                  <th scope="col">Current Fund</th>
                   <th scope="col">Start Date</th>
-                  <th scope="col">End Date</th>
-                  <th scope="col">Rate</th>
-                 
+                  <th scope="col">End Date</th>     
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -172,12 +168,8 @@
                   <th scope="row">{{project.id}}</th>
                   <td>{{project.title}}</td>
                   <td>{{project.category}}</td>
-                  <td>{{project.total_target}}</td>
-                  <td>{{project.current_fund}}</td>
                   <td>{{project.start_date}}</td>
                   <td>{{project.end_date}}</td>
-                  <td>{{project.total_rate}}</td>
-                 
                   <td>
                     <a
                       class="btn btn-outline-dark btn-sm"
@@ -314,7 +306,7 @@
             <tbody>
             
               {%for reported_comment in reported_comments%}
-             
+             {{reported_comments}}
               <tr>
                 <th scope="row">{{reported_comment.comment.project.id}}</th>
                 <td>{{reported_comment.comment.project.title}}</td>
@@ -328,9 +320,6 @@
               </tr>
               </tr>
              {%endfor%}
-             
-              
-             
             </tbody>
           </table>
         </div>
