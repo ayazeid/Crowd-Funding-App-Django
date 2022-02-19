@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.db import transaction
 from django.urls import reverse, reverse_lazy
 from extra_views import CreateWithInlinesView, InlineFormSetFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -49,7 +50,6 @@ class ProjectCreate(LoginRequiredMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         data = super(ProjectCreate, self).get_context_data(**kwargs)
         if self.request.POST:
-            print(self.request.POST)
             data['project_pictures'] = ProjectPictureFormSet(self.request.POST, self.request.FILES)
             data['project_tags'] = ProjectTagFormSet(self.request.POST)
         else:
@@ -150,8 +150,24 @@ class DonateCreate(LoginRequiredMixin, CreateView):
         context['user_donated_id'] = self.request.user.id
         return context
 
+    def form_valid(self, form):
+        # context = self.get_context_data()
+        # project_id = context['project_id']
+        # donation_amount = context['form'].instance.amount
+        # print(context['form'])
+        # project = Project.objects.filter(id=project_id)[0]
+        # project.current_fund += 2
+        # project.save()
+        form.save()
+        return super(DonateCreate, self).form_valid(form)
+
+
     def get_success_url(self):
         return reverse('details-project', kwargs={'pk': self.object.project.id})
+    
+    # def form_invalid(self, form):
+    #     return redirect("projects")
+
 
 
 """
