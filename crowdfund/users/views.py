@@ -16,18 +16,26 @@ from django.template.loader import render_to_string
 from django.contrib.auth.models import User  
 from django.core.mail import EmailMessage  
 
-# signals imports
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Profile
 from projects.models import Project,UserDonation,ProjectReport,ReportComment,Comment,Rating
 from django.db.models import Sum
+
+
+
+
+
+
 # Create your views here.
-# - He can view his profile
+# profile view
 def user_profile(request):
  if (request.user.is_authenticated):
+    # - He can view his profile
     loged_user = Profile.objects.get(user=request.user)
+    # - He can view his projects
     user_projects = Project.objects.filter(project_owner=request.user)
+    # - He can view his donations
     user_donations= UserDonation.objects.filter(user_donated=request.user)
     total_donations_amount = sum([donation.amount for donation in UserDonation.objects.filter(user_donated=request.user) ])
     reported_projects = ProjectReport.objects.all()
@@ -38,15 +46,15 @@ def user_profile(request):
      return redirect('signin')
 
 
-# - He can view his projects
-# - He can view his donations
 
-# - He can edit all his data except for the email, done
-# - He can have extra optional info other than the info he added
-# while registration (Birthdate, facebook profile, country), done
+
+# edit profile view
 def update_profile(request):
  if (request.user.is_authenticated):
     if request.method == 'POST':
+        # - He can edit all his data except for the email, done
+        # - He can have extra optional info other than the info he added
+        # while registration (Birthdate, facebook profile, country), done
         userform=EditUserForm(request.POST,instance=request.user)
         forminstance=UserProfileForm(request.POST, request.FILES,instance=Profile.objects.get(user=request.user))
         if userform.is_valid() and forminstance.is_valid():
@@ -63,10 +71,11 @@ def update_profile(request):
  else:
      return redirect('signin')
 
-# - User can delete his account (Note that there must be a
-# confirmation message before deleting), done
+
 def delete_profile(request):
  if (request.user.is_authenticated):
+    # - User can delete his account (Note that there must be a
+    # confirmation message before deleting), done
     User.objects.get(username=request.user.username).delete()
     return HttpResponse('User deleted successfully')
  else:
