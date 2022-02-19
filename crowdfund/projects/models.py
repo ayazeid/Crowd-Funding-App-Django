@@ -2,12 +2,19 @@ from django.conf import settings
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
+import re
+from django.forms import ValidationError
+from django.utils.translation import gettext_lazy as _
+
 
 """"
     click report -> Project(UpdateView) -> template: form (ok==sumbit) -> reverse('projects')
 
     click donate -> project(UpdateView):current_fund, UserDonations(UpdateView):{user_id-project_id-donation_amount} -> template: form (ok==sumbit) -> reverse('projects')
 """
+
+# Utils
+
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
