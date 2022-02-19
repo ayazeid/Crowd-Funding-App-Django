@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.db import transaction
+from django.db.models import Sum
 from django.urls import reverse, reverse_lazy
 from extra_views import CreateWithInlinesView, InlineFormSetFactory
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,6 +26,13 @@ class ProjectDetail(DetailView):
         data = super(ProjectDetail, self).get_context_data(**kwargs)
         data['current_user'] = self.request.user
         data['pics'] = ProjectPicture.objects.filter(project_id = self.kwargs["pk"])
+        total_rate = Rating.objects.filter(project_id=self.kwargs["pk"]).aggregate(Sum('rating')).get('rating__sum')
+        raters_count = Rating.objects.filter(project_id=self.kwargs["pk"]).count()
+        data['total_donations'] = UserDonation.objects.filter(project_id=self.kwargs["pk"]).aggregate(Sum('amount')).get('amount__sum')
+        try:
+            data['rating'] = total_rate / raters_count
+        except:
+            data['rating'] = 0
         return data
 
 
@@ -151,10 +158,10 @@ class DonateCreate(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
+        # print(self.object)
         # context = self.get_context_data()
         # project_id = context['project_id']
-        # donation_amount = context['form'].instance.amount
-        # print(context['form'])
+        # # donation_amount = self.object.amount
         # project = Project.objects.filter(id=project_id)[0]
         # project.current_fund += 2
         # project.save()

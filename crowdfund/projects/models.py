@@ -13,7 +13,6 @@ from django.utils.translation import gettext_lazy as _
     click donate -> project(UpdateView):current_fund, UserDonations(UpdateView):{user_id-project_id-donation_amount} -> template: form (ok==sumbit) -> reverse('projects')
 """
 
-# Utils
 
 
 class Category(models.Model):
@@ -98,12 +97,8 @@ class Comment(models.Model):
  
 
 class ReportComment(models.Model):
-    class Meta:
-        unique_together = (('comment', 'user_reported', 'report_date'),)
     id = models.AutoField(primary_key=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     user_reported = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    report_date = models.DateField()
 
 
 class UserDonation(models.Model):
@@ -111,9 +106,6 @@ class UserDonation(models.Model):
     user_donated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f'{self.user_donated.username} - {self.project.title} - {self.amount}'
 
 class Tag(models.Model):
     id = models.AutoField(primary_key=True)
