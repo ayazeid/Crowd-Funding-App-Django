@@ -40,7 +40,10 @@ def user_profile(request):
     total_donations_amount = sum([donation.amount for donation in UserDonation.objects.filter(user_donated=request.user) ])
     reported_projects = ProjectReport.objects.all()
     reported_comments = ReportComment.objects.all()
-    context = {'user': loged_user,'projects':user_projects,'donations':user_donations,'total_donations':total_donations_amount,'reported_projects':reported_projects,'reported_comments':reported_comments}
+    total_ratings = Rating.objects.all()
+    #raters_count = Rating.objects.filter(project_id=self.kwargs["pk"]).count()
+    total_donations_project = UserDonation.objects.all()
+    context = {'user': loged_user,'projects':user_projects,'donations':user_donations,'total_donations':total_donations_amount,'reported_projects':reported_projects,'reported_comments':reported_comments,'total_ratings':total_ratings,'total_donations_project':total_donations_project}
     return render(request, 'users/user_profile.html', context)
  else:
      return redirect('signin')

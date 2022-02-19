@@ -1,6 +1,9 @@
 {% extends 'base.html' %} {%block title%}User Profile{%endblock title%}
 <!--load bootstrap-->
-{%load bootstrap5 %} {% block content %}
+{%load bootstrap5 %} 
+<!--custom tags-->
+{% load myapp_extras %}
+{% block content %}
 <!--<h1>userprofile</h1>-->
 <div class="container my-5 shadow-lg py-3 my-3 rounded-3">
   <!--    { # user info #}-->
@@ -167,15 +170,32 @@
               </thead>
               <tbody>
                 {%for project in projects %}
+                
                 <tr class="align-middle text-center">
                   <th scope="row">{{project.id}}</th>
                   <td>{{project.title}}</td>
                   <td>{{project.category}}</td>
                   <td>{{project.total_target}}</td>
-                  <td>{{project.current_fund}}</td>
+                  <td>
+                  
+                    {% regroup total_donations_project by project as fundings %}
+                    {%for fund in fundings%}
+                    {%if fund.grouper == project%}
+                      {{fund.list|sum_total_count}}           
+                    {%endif%}          
+                    {%endfor%}
+                  
+                  </td>
                   <td>{{project.start_date}}</td>
                   <td>{{project.end_date}}</td>
-                  <td>{{project.total_rate}}</td>
+                  <td>
+                    {% regroup total_ratings by project_id as project_rates%}
+                    {%for rate in project_rates%}
+                      {%if rate.grouper == project %}
+                      {{rate.list|sum_total_rate}}
+                      {%endif%}
+                    {%endfor%}
+                  </td>
                   <td>
                     <a
                       class="btn btn-outline-dark btn-sm"

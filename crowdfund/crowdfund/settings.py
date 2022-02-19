@@ -11,13 +11,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-import environ
+#import environ
 import os
 
 
 # Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
+# env = environ.Env()
+# environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -100,16 +100,16 @@ WSGI_APPLICATION = 'crowdfund.wsgi.application'
 #      }
 #  }
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'crowdfunding_dbdb',
-#        'USER': 'yoda',
-#        'PASSWORD': 'yoda',
-#        'HOST': 'localhost',
-#        'PORT': 5432
-#    }
-# }
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
+       'NAME': 'crowdfunding_dbdb',
+       'USER': 'yoda',
+       'PASSWORD': 'yoda',
+       'HOST': 'localhost',
+       'PORT': 5432
+   }
+}
 
 
 
@@ -174,7 +174,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_USE_TLS = True  
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_HOST_USER = 'crowd.funding.iti.website@gmail.com'  
-EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+EMAIL_HOST_PASSWORD = 'Crowdfunding1'
 EMAIL_PORT = 587  
 
 
