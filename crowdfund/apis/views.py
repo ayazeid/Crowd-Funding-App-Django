@@ -7,7 +7,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from datetime import date
-from user_apis.serializers import UserSerializer
 class ListProjects(generics.ListAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -202,18 +201,20 @@ class CommentProject(APIView):
                 'exception':f'{e}'
             },status=status.HTTP_404_NOT_FOUND)
 
-# class ReportComment(APIView):
-#     permission_classes = [IsAuthenticated]
+class ReportProjectComment(APIView):
+    permission_classes = [IsAuthenticated]
 
-#     def post(self, request, pk):
-#         try:
-#             comment = Comment.objects.get(id=pk)
-#             user = request.user
-#             if ReportComment.objects.filter(user_reported=user,comment=comment):
-#                 return Response({'msg':"You can't report the same comment twice!"},status.HTTP_400_BAD_REQUEST)
-#             ReportComment.objects.create(comment=comment,user_reported=user,report_date=date.today())
-#             comment.reports_count += 1
-#             comment.save()
-#             return Response({'msg':"Report sent successfully"},status.HTTP_201_CREATED)
-#         except:
-#             return Response({'msg':"Can't find comments with given id"},status.HTTP_404_NOT_FOUND)
+    def post(self, request, pk):
+        try:
+            comment = Comment.objects.get(id=pk)
+            user = request.user
+            if ReportComment.objects.filter(user_reported=user,comment=comment):
+                return Response({'msg':"You can't report the same comment twice!"},status.HTTP_400_BAD_REQUEST)
+            ReportComment.objects.create(comment=comment,user_reported=user,report_date=date.today())
+            comment.reports_count += 1
+            comment.save()
+            return Response({'msg':"Report sent successfully"},status.HTTP_201_CREATED)
+        except:
+            return Response({
+                'msg':"Can't find comments with given id",
+                },status.HTTP_404_NOT_FOUND)
