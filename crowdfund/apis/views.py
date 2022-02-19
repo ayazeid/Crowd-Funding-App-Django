@@ -98,17 +98,18 @@ class UpdateProject(APIView):
 class DeleteProject(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, pk):
+    def delete(self, request, pk):
             try:
                 project = Project.objects.get(id=pk)
                 if project.project_owner == request.user:
-                    current_fund_percentage = (project.current_fund / project.total_target)*100
+                    project_current_fund = UserDonation.objects.filter(project=project).aggregate(Sum('amount')).get('amount__sum')
+                    print(project_current_fund)
+                    current_fund_percentage = (project_current_fund / project.total_target)*100
                     if  current_fund_percentage < 25:
                         project.delete()
                         return Response({'msg':'Project Deleted Successfully'},status.HTTP_200_OK)
                     else:
-                        return Response({'msg':"Sorry,\
-                        you can't delete your project if it's current fund percentage is higher than 25%"},
+                        return Response({'msg':"Sorry, you can't delete your project if it's current fund percentage is higher than 25%"},
                         status.HTTP_400_BAD_REQUEST)
                 else:
                     return Response({'msg':"You can't delete a project that you didn't create"},
@@ -127,9 +128,13 @@ class DonateFund(APIView):
             try:
                 project = Project.objects.get(id=id)
                 UserDonation.objects.create(user_donated=request.user,project=project,amount=fund)
-                project.current_fund += fund
-                project.save()
-                return Response({'msg':"Thank you for your donation! <3"},status.HTTP_200_OK)
+                project_current_fund = UserDonation.objects.filter(project=project).aggregate(Sum('amount')).get('amount__sum')
+                if project_current_fund >= project.total_target:
+                    project.delete()
+                    return Response({'msg':"Project Fund has reached the target! ^^"},status.HTTP_200_OK)
+                else:
+                    project.save()
+                    return Response({'msg':"Thank you for your donation! <3"},status.HTTP_200_OK)
             except Project.DoesNotExist:
                 return Response({'msg':"Can't find project with given id"},status.HTTP_404_NOT_FOUND)
         else:
@@ -170,8 +175,6 @@ class RateProject(APIView):
                     return Response({'msg':"You can't rate the same project twice!"},status.HTTP_400_BAD_REQUEST)
                 user_rating = request.POST.get('rating')
                 Rating.objects.create(project_id=project,user_rated=user,rating=user_rating)
-                project.rating_users_count += 1
-                project.total_rate += int(user_rating)
                 project.save()
                 return Response({'msg':"Rating sent successfully"},status.HTTP_201_CREATED)
             except:
