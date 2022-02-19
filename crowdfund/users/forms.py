@@ -17,7 +17,8 @@ class EditUserForm(forms.ModelForm):
 
 #################################################
 class SignupForm(UserCreationForm):  
-    email = forms.EmailField(max_length=200, help_text='Required')  
+    email = forms.EmailField(max_length=200, help_text='Required') 
+  
     class Meta:  
         model = User  
         fields = ['first_name','last_name','username', 'email', 'password1', 'password2']
@@ -27,7 +28,7 @@ class SignupForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise ValidationError("Email already exists")
         return email
-        
+         
         
 class SigninForm(forms.ModelForm):
     password =  forms.CharField(max_length=32, widget=forms.PasswordInput)
