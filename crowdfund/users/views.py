@@ -163,7 +163,6 @@ def signin_user(request):
          myform = SigninForm()
          context['form']=myform
          context['msg']='Wrong password or username ... '
-         
          return render(request,'signin.html',context)
     else:
         myform = SigninForm()
