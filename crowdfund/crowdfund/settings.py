@@ -103,7 +103,7 @@ DATABASES = {
 # DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'crowddb',
+#        'NAME': 'crowdfund',
 #        'USER': 'yoda',
 #        'PASSWORD': 'yoda',
 #        'HOST': 'localhost',
