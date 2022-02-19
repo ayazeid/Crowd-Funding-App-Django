@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from projects.models import *
-
-# class ProjectListSerializer(serializers.ModelSerializer):
+from user_apis.serializers import UserSerializer
 
 class ProjectSerializer(serializers.ModelSerializer):
     average_rate = serializers.SerializerMethodField('calc_average_rate')
@@ -17,7 +16,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = ['id','title','details','total_target','current_fund','start_date','end_date',
         'reports_count','rating_users_count','total_rate','category','average_rate',
-        'featured','images']
+        'featured','images','comment_set']
         depth = 1
         
 
@@ -26,6 +25,10 @@ class ProjectImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = ProjectPicture
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
