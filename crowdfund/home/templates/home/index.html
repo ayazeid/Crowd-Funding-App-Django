@@ -20,16 +20,16 @@
   {% for project in top_rated_projects %}
   <div class="w3-display-container mySlides">
     <img
-      src="http://127.0.0.1:8000/media/{{project.images.all.0.picture}}"
+      src="http://127.0.0.1:8000/media/{{project.project.images.all.0.picture}}"
       style="width: 100%; height: 50vh"
     />
     <div
       class="w3-display-bottomleft w3-large w3-container w3-padding-16 w3-black"
     >
       <a
-        href="{% url 'details-project' project.id %}"
+        href="{% url 'details-project' project.project.id %}"
         style="text-decoration: none"
-        >{{project.title}}</a
+        >{{project.project.title}}</a
       >
     </div>
   </div>

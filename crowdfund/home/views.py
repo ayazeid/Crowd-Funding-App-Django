@@ -1,7 +1,7 @@
 from multiprocessing import context
 from django.shortcuts import render,redirect
-from projects.models import Project,Category,Tag
-from django.db.models import Count
+from projects.models import Project,Category,Tag,Rating
+from django.db.models import Count,Sum
 # Create your views here.
 
 def top_rated(request):
@@ -11,13 +11,17 @@ def top_rated(request):
     latest_projects = Project.objects.all().order_by('-id')[:5]
 
     admin_projects = Project.objects.filter(featured=1).order_by('-id')[:5]
-
-    top_rated_projects_id=Project.objects.values('id').annotate(num_projects=Count('total_rate')).order_by('-total_rate')[:5]
-    top_rated_projects=[]
-    for i in top_rated_projects_id:
-        project=Project.objects.filter(id=i["id"])[0]
-        top_rated_projects.append(project)
-
+    top_projects=Project.objects.all()
+    project_list=[]
+    for project in top_projects:
+        total_rate = Rating.objects.filter(project_id=project).aggregate(Sum('rating')).get('rating__sum')
+        raters_count = Rating.objects.filter(project_id=project).count()
+        try:
+            rating= total_rate / raters_count
+        except:
+            rating= 0
+        project_list.append({'project':project,'rating':rating})
+    top_rated_projects = sorted(project_list, key=lambda d: d['rating'],reverse=True)[:5]
     return render(request,'home/index.html' ,{"latest_projects":latest_projects,"top_rated_projects":top_rated_projects,"categories":categories,"admin_projects":admin_projects })
 
 def projectCategories(request):
