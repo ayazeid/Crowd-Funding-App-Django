@@ -29,14 +29,23 @@ def projectCategories(request):
 
 
 def SearchTitle(request):
-  
     title=request.POST.get('title')
+    if title == "":
+         return render(request, 'home/invalidValue.html')
     search_by_title =Project.objects.filter(title__contains=title)
-    return render(request,'home/searchTitle.html' ,{"search_by_title":search_by_title})
+    if not search_by_title :
+        return render(request, 'home/noSearchValue.html')
+    else:
+        return render(request,'home/searchTitle.html' ,{"search_by_title":search_by_title})
   
 def SearchTag(request):
  
     tag = request.POST.get('tag')
+    if tag == "":
+         return render(request, 'home/invalidValue.html')
     search_by_tag=Tag.objects.filter(tag_name__contains=tag)
-    return render(request,'home/searchTag.html' ,{"search_by_tag":search_by_tag })
+    if not search_by_tag :
+        return render(request, 'home/noSearchValue.html')
+    else:
+        return render(request,'home/searchTag.html' ,{"search_by_tag":search_by_tag })
  

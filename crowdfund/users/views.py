@@ -154,10 +154,10 @@ def signin_user(request):
         myform=SigninForm(request.POST)
         u = User.objects.get(email=request.POST['email'])
         user = authenticate(username=u.username,password=request.POST['password'])
-        if user is not None and user.is_active:
-          login(request,user)     
-          return redirect(user_profile)
-        elif not user.is_active:
+        if u.is_active == True:
+            login(request,user)     
+            return redirect(user_profile)
+        else:
             return HttpResponse('you should active your acount first... chick your Email')
      except:
          myform = SigninForm()
