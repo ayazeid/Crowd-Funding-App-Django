@@ -68,7 +68,7 @@ class ProjectRatingForm(forms.ModelForm):
         (5, 5),
     )
 
-    rating = forms.ChoiceField(choices=RATING_CHOICES)
+    # rating = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
         super(ProjectRatingForm, self).__init__(*args, **kwargs)

@@ -63,7 +63,7 @@ class Rating(models.Model):
     id = models.AutoField(primary_key=True)
     user_rated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    rating = models.IntegerField(choices=RATING_CHOICES)  # Rating out of 5
+    rating = models.IntegerField(default=0)  # Rating out of 5
 
     def __str__(self):
         return self.user_rated.username + ' - ' + self.project_id.title + " rating"

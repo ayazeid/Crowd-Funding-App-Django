@@ -7,6 +7,7 @@ from django.http import Http404, HttpResponse
 from .models import Project, ProjectPicture, Comment, Tag, UserDonation, ProjectReport, ReportComment, Rating
 from .forms import ProjectCreateForm, ProjectRatingForm, ProjectPictureFormSet, ProjectTagFormSet
 from datetime import datetime
+from django.db.models import Sum
 """
 --Project views--
 users can only view, create, delete(only their own) projects
@@ -140,6 +141,10 @@ class DonateCreate(LoginRequiredMixin, CreateView):
         context = super(DonateCreate, self).get_context_data(**kwargs)
         context['project_id'] = self.kwargs["pk"]
         context['user_donated_id'] = self.request.user.id
+        total_donations= UserDonation.objects.filter(project_id=self.kwargs["pk"]).aggregate(Sum('amount')).get('amountsum')
+        project = Project.objects.filter(id=self.kwargs["pk"])[0]
+        project.current_fund = total_donations
+        project.save()
         return context
 
     def get_success_url(self):
@@ -153,11 +158,48 @@ class RateCreate(LoginRequiredMixin, CreateView):
     model = Rating
     login_url = reverse_lazy('signin')
     form_class = ProjectRatingForm
-
     def get_context_data(self, **kwargs):
         context = super(RateCreate, self).get_context_data(**kwargs)
         context['project_id'] = self.kwargs["pk"]
         context['user_rated_id'] = self.request.user.id
+        # project = Project.objects.filter(id=self.kwargs["pk"])[0]
+        # print(project)
+        # total_rate = Rating.objects.filter(project_id=project).aggregate(Sum('rating')).get('rating__sum')
+        # print(self.rating)
+        # print('rating_post', self.object.rating)
+        # if total_rate == None:
+        #     total_rate = self.request.POST["rating"]
+        # # sum([donation.amount for donation in UserDonation.objects.filter(user_donated=request.user) ])
+        # raters_count = Rating.objects.filter(project_id=project).count()
+        # if raters_count == 0:
+        #     raters_count = 1
+        
+        # print('total_rate: ',total_rate)
+        # print('raters_count: ',raters_count)
+        # try:
+        #     rating= total_rate / raters_count
+        #     print('rating: ',rating)
+        # except:
+        #     rating = 0
+        #     print('rating: ',rating)
+        
+        # project.total_rate = rating
+        # project.save()
+
+
+        # project = Project.objects.get(id=self.kwargs["pk"])
+        # rating = Rating.objects.filter(project_id=project)
+        # sum_rates = 0
+        # for rate in rating:
+        #     sum_rates += rate.rating
+        # if sum_rates > 0:
+        #     project.total_rate = project.rating_users_count/ sum_rates
+        #     print('users: ',project.rating_users_count + 1)
+        #     print('total_rate: ',project.rating_users_count/ sum_rates)
+        #     project.rating_users_count += 1
+        # else:
+        #     project.total_rate = 0
+        # project.save()
         return context
         
     def get_success_url(self):
