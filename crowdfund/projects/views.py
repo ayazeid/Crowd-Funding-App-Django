@@ -73,6 +73,7 @@ class ProjectCreate(LoginRequiredMixin, CreateWithInlinesView):
 
 
 def projectDelete(request, pk):
+ if (request.user.is_authenticated):
     project = Project.objects.get(id=pk)
     current_fund_percentage = (project.current_fund / project.total_target)*100
     if  current_fund_percentage < 25 and request.user.id == project.project_owner.id:
@@ -80,9 +81,11 @@ def projectDelete(request, pk):
         return redirect("projects")
     else:
         return HttpResponse("Not allowed to delete this project!")
-
+ else:
+         return redirect('signin')
 
 def projectReport(request, pk):
+  if (request.user.is_authenticated):
     project = Project.objects.get(id=pk)
     try:
         new_report = ProjectReport(project=project, user_reported=request.user, report_date=datetime.today().strftime('%Y-%m-%d'))
@@ -92,12 +95,15 @@ def projectReport(request, pk):
         return redirect("projects")
     except:
         return redirect("projects")
+  else:
+         return redirect('signin')  
 
 """
 --Comments views--
 """
 
 def commentReport(request, cpk):
+  if (request.user.is_authenticated):
     comment = Comment.objects.get(id=cpk)
     print(comment.id)
     print(comment.content)
@@ -110,10 +116,12 @@ def commentReport(request, cpk):
         return redirect("projects")
     except:
         return redirect("projects")
+  else:
+         return redirect('signin')
 
-
-class CommentCreate(CreateView):
+class CommentCreate(LoginRequiredMixin,CreateView):
     model = Comment
+    login_url = reverse_lazy('signin')
     fields = ['content', 'project', 'user_commented']
     
     def get_context_data(self, **kwargs):
